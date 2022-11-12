@@ -4,7 +4,7 @@
 #include <vector>
 #include <queue>
 #include <unordered_set>
-#include <pair> //TODO: FIND CORRECT LIBRARY, SEE LINE 180
+#include <utility>
 #include <string>
 
 /* Edge Class */
@@ -45,7 +45,7 @@ class Node {
             _edge = edge;
         }
 
-        Node(const Node other){
+        Node(const Node & other){
             _x = other._x;
             _y = other._y;
             _edge = other._edge;
@@ -59,6 +59,7 @@ class Node {
             _x = other._x;
             _y = other._y;
             _edge = other._edge;
+            return *this;
         }
 
         double _x, _y;
@@ -66,7 +67,7 @@ class Node {
 };
 
 /* Convert text files to a friendlier adjancency list */
-std::vector<Node*> makeAdjList(){
+std::vector<Node*> makeDataSet(){
     std::fstream node_list, edge_list;
     std::vector<Edge*> edges;
     std::vector<Node*> ret;
@@ -120,7 +121,7 @@ std::vector<Node*> makeAdjList(){
         /* construct edge list from edge vector */
         auto iter = edges.begin();
         while(iter != edges.end()) (*iter)->_next = (*++iter); //TODO: Check if derefrencing end() assigns NULL to last edge
-        Edge * edge_list_head = new Edge(*(edges[0]));
+        Edge * edge_list_head = new Edge(*edges[0]);
 
         /* construct Node, push to ret */
         ret.push_back(new Node(latitude, longitude, edge_list_head));
@@ -131,6 +132,9 @@ std::vector<Node*> makeAdjList(){
     }
     /* close node file */
     node_list.close();
+
+    /* return */
+    return ret;
 }
 
 // Edge * getEdge(unsigned base_idx, std::fstream edge_list){
@@ -196,10 +200,10 @@ std::vector<Node*> BFS(std::vector<Node*> dataset){
     /* center globals */
     std::pair<unsigned, double> user = getUserInput();
     unsigned __CENTER_IDX = user.first;
-    double __RADIUS = user.second;
+    double __RADIUS_SQR = user.second * user.second;
 
     /* push center node */
-    queue.push(new Node(dataset[__CENTER_IDX]));
+    queue.push(new Node(*dataset[__CENTER_IDX]));
     visited.emplace(__CENTER_IDX);
     while(!queue.empty()){
         /* push to ret + pop */
@@ -209,10 +213,11 @@ std::vector<Node*> BFS(std::vector<Node*> dataset){
         /* parse adjacent nodes via front node's edge list */
         edge_list = (ret.back())->_edge;
         while(edge_list){
-            /* check if adj node is visited */
-            if(visited.find(edge_list->_end_node_idx) == visited.end()){
+            /* check if adj node is visited OR OUTSIDE RADIUS */
+            if(visited.find(edge_list->_end_node_idx) == visited.end() && (dataset[edge_list->_end_node_idx]->_x - 
+            dataset[__CENTER_IDX]->_x + dataset[edge_list->_end_node_idx]->_y - dataset[__CENTER_IDX]->_y <= __RADIUS_SQR)){
                 /* push unvisited adj node + mark as visited */
-                queue.push(new Node(dataset[edge_list->_end_node_idx]));
+                queue.push(new Node(*dataset[edge_list->_end_node_idx]));
                 visited.emplace(edge_list->_end_node_idx);
             }
             edge_list = edge_list->_next;
@@ -226,8 +231,8 @@ std::vector<Node*> BFS(std::vector<Node*> dataset){
 
 int main() {
     /* construct adj list from txt files */
-    std::vector<Node*> dataset = makeAdjList();
-    if(adjList == std::vector<Node*>()) return 1;
+    std::vector<Node*> dataset = makeDataSet();
+    if(dataset == std::vector<Node*>()) return 1;
 
     /* constuct 'circle' subset */
     std::vector<Node*> subset = BFS(dataset);
