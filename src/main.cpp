@@ -1,0 +1,236 @@
+#include <iostream>
+#include <istream>
+#include <fstream>
+#include <vector>
+#include <queue>
+#include <unordered_set>
+#include <pair> //TODO: FIND CORRECT LIBRARY, SEE LINE 180
+#include <string>
+
+/* Edge Class */
+class Edge {
+    public:
+        Edge(unsigned end_node_idx, double weight, Edge * next){
+            _end_node_idx = end_node_idx;
+            _weight = weight;
+            _next = next;
+        }
+
+        ~Edge(){
+            if(!_next) return;
+            _next->~Edge();
+            delete _next;
+            _next = NULL;
+        }
+
+        Edge& operator=(const Edge other){
+            this->~Edge();
+            _end_node_idx = other._end_node_idx;
+            _weight = other._weight;
+            _next = other._next;
+            return *this;
+        }
+
+        unsigned _end_node_idx;
+        double _weight;
+        Edge * _next;
+};
+
+/* Node Class */
+class Node {
+    public:
+        Node(double latitude, double longitude, Edge * edge){
+            _x = latitude;
+            _y = longitude;
+            _edge = edge;
+        }
+
+        Node(const Node other){
+            _x = other._x;
+            _y = other._y;
+            _edge = other._edge;
+        }
+
+        ~Node(){
+            _edge->~Edge();
+        }
+
+        Node& operator=(const Node other){
+            _x = other._x;
+            _y = other._y;
+            _edge = other._edge;
+        }
+
+        double _x, _y;
+        Edge * _edge;
+};
+
+/* Convert text files to a friendlier adjancency list */
+std::vector<Node*> makeAdjList(){
+    std::fstream node_list, edge_list;
+    std::vector<Edge*> edges;
+    std::vector<Node*> ret;
+
+    /* open node file */
+    node_list.open("../datasets/california_nodes.txt");
+    if(!node_list.is_open()) return std::vector<Node*>();
+
+    /* parse node file */
+    while(node_list){
+        /* init node data */
+        char * str_node;
+        unsigned node_idx;
+        double latitude, longitude;
+
+        /* grab node data */
+        node_list.getline(str_node, 50,'\n');
+        node_list >> node_idx >> latitude >> longitude;
+
+        /* open edge file */
+        edge_list.open("../datasets/california_edges.txt");
+
+        /* init edge data */
+        char * str_edge;
+        unsigned edge_idx;
+        unsigned start_node_idx, end_node_idx;
+        double weight;
+
+        /* goto start_node */
+        do{
+            edge_list.getline(str_edge, 50, '\n');
+            edge_list >> edge_idx >> start_node_idx >> end_node_idx >> weight;
+        }while(start_node_idx != node_idx);
+
+        /* parse edge file */
+        while(edge_list){
+            /* construct Edge (recur call) */
+            edges.push_back(new Edge(end_node_idx, weight, NULL));
+
+            /* grab edge data */
+            edge_list.getline(str_edge, 50, '\n');
+            edge_list >> edge_idx >> start_node_idx >> end_node_idx >> weight;
+
+            /* break check */
+            if(start_node_idx != node_idx) break;
+        }
+
+        /* close edge file */
+        edge_list.close();
+
+        /* construct edge list from edge vector */
+        auto iter = edges.begin();
+        while(iter != edges.end()) (*iter)->_next = (*++iter); //TODO: Check if derefrencing end() assigns NULL to last edge
+        Edge * edge_list_head = new Edge(*(edges[0]));
+
+        /* construct Node, push to ret */
+        ret.push_back(new Node(latitude, longitude, edge_list_head));
+
+        /* delete edges vector*/
+        edges[0]->~Edge();
+        edges.clear();
+    }
+    /* close node file */
+    node_list.close();
+}
+
+// Edge * getEdge(unsigned base_idx, std::fstream edge_list){
+//     /* init edge data */
+//     char * str_edge;
+//     unsigned edge_idx;
+//     unsigned start_node_idx, end_node_idx;
+//     double weight;
+
+//     /* grab edge data */
+//     edge_list.getline(str_edge, 50, '\n');
+//     edge_list >> edge_idx >> start_node_idx >> end_node_idx >> weight;
+
+//     /* fail check */
+//     if(start_node_idx != base_idx) return NULL;
+
+//     /* construct Edge (recur call) */
+//     Edge * ret = new Edge(end_node_idx, weight, getEdge(base_idx, edge_list)); //TODO: WHY NO COMPILE??
+
+//     /* return */
+//     return ret;
+// }
+
+// Node * getNode(std::fstream node_list, std::fstream edge_list){
+//     /* init node data */
+//     char * str_node;
+//     unsigned node_idx;
+//     double latitude, longitude;
+
+//     /* grab node data */
+//     node_list.getline(str_node, 50,'\n');
+//     node_list >> node_idx >> latitude >> longitude;
+
+//     /* construct Node */
+//     Node * ret = new Node(latitude, longitude, getEdge(node_idx, edge_list)); //TODO: WHY NO COMPILE??
+
+//     /* return */
+//     return ret;
+// }
+
+std::pair<unsigned, double> getUserInput(){
+    /* get center node # */
+    unsigned user_node;
+    std::cout << "ENTER CENTER NODE # : " << std::endl;
+    std::cin >> user_node;
+
+    /* get radius */
+    double radius;
+    std::cout << "ENTER RADIUS : " << std::endl;
+    std::cin >> radius;
+
+    /* return */
+    return std::pair<unsigned, double>({user_node, radius});
+}
+
+std::vector<Node*> BFS(std::vector<Node*> dataset){
+    /* init data */
+    std::vector<Node*> ret;
+    std::unordered_set<unsigned> visited;
+    std::queue<Node*> queue;
+    Edge * edge_list;
+
+    /* center globals */
+    std::pair<unsigned, double> user = getUserInput();
+    unsigned __CENTER_IDX = user.first;
+    double __RADIUS = user.second;
+
+    /* push center node */
+    queue.push(new Node(dataset[__CENTER_IDX]));
+    visited.emplace(__CENTER_IDX);
+    while(!queue.empty()){
+        /* push to ret + pop */
+        ret.push_back(queue.front());
+        queue.pop();
+
+        /* parse adjacent nodes via front node's edge list */
+        edge_list = (ret.back())->_edge;
+        while(edge_list){
+            /* check if adj node is visited */
+            if(visited.find(edge_list->_end_node_idx) == visited.end()){
+                /* push unvisited adj node + mark as visited */
+                queue.push(new Node(dataset[edge_list->_end_node_idx]));
+                visited.emplace(edge_list->_end_node_idx);
+            }
+            edge_list = edge_list->_next;
+        }
+    }
+
+    /* return :) */
+    return ret;
+}
+
+
+int main() {
+    /* construct adj list from txt files */
+    std::vector<Node*> dataset = makeAdjList();
+    if(adjList == std::vector<Node*>()) return 1;
+
+    /* constuct 'circle' subset */
+    std::vector<Node*> subset = BFS(dataset);
+
+    return 0;
+}
