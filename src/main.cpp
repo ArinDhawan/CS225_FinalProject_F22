@@ -17,19 +17,31 @@ class Edge {
             _next = next;
         }
 
+        Edge(const Edge & other){
+            _end_node_idx = other._end_node_idx;
+            _weight = other._weight;
+            _next = other._next;
+        }
+
         ~Edge(){
+            /* mark */
+            //std::cout << "Line : " << __LINE__ << std::endl;
+
             if(!_next) return;
             _next->~Edge();
             delete _next;
             _next = NULL;
         }
 
-        Edge& operator=(const Edge other){
+        Edge* operator=(const Edge * other){
+            /* mark */
+            //std::cout << "Line : " << __LINE__ << std::endl;
+
             this->~Edge();
-            _end_node_idx = other._end_node_idx;
-            _weight = other._weight;
-            _next = other._next;
-            return *this;
+            _end_node_idx = other->_end_node_idx;
+            _weight = other->_weight;
+            _next = (other->_next) ? new Edge(*(other->_next)) : NULL;
+            return this;
         }
 
         unsigned _end_node_idx;
@@ -56,11 +68,16 @@ class Node {
             _edge->~Edge();
         }
 
-        Node& operator=(const Node other){
-            _x = other._x;
-            _y = other._y;
-            _edge = other._edge;
-            return *this;
+        Node* operator=(const Node * other){
+            if(!other) return NULL;
+
+            /* mark */
+            //std::cout << "Line : " << __LINE__ << std::endl;
+
+            _x = other->_x;
+            _y = other->_y;
+            _edge = (other->_edge) ? new Edge(*(other->_edge)) : NULL;
+            return this;
         }
 
         double _x, _y;
@@ -73,18 +90,13 @@ std::vector<Node*> makeDataSet(){
     std::vector<Edge*> edges;
     std::vector<Node*> ret;
 
-    /* mark */
-    std::cout << "Line : " << __LINE__ << std::endl;
-
     /* open node file */
-    node_list.open("datasets/california_nodes.txt", std::ios_base::in);
+    node_list.open("datasets/small_nodes.txt", std::ios_base::in);
     if(!node_list.is_open()) return std::vector<Node*>();
-
-    /* mark */
-    std::cout << "Line : " << __LINE__ << std::endl;
 
     /* parse node file */
     while(node_list){
+
         /* init node data */
         std::string str_node;
         unsigned node_idx;
@@ -96,14 +108,12 @@ std::vector<Node*> makeDataSet(){
         s >> node_idx >> latitude >> longitude;
 
         /* mark */
-        std::cout << "Line : " << __LINE__ << std::endl;
+        //std::cout << "Line : " << __LINE__ << std::endl;
+        //std::cout << "node_idx : " << node_idx << std::endl;
 
         /* open edge file */
-        edge_list.open("dataset/california_edges.txt", std::ios_base::in);
+        edge_list.open("datasets/small_edges.txt", std::ios_base::in);
         if(!edge_list.is_open()) return std::vector<Node*>();
-
-        /* mark */
-        std::cout << "Line : " << __LINE__ << std::endl;
 
         /* init edge data */
         std::string str_edge;
@@ -113,13 +123,17 @@ std::vector<Node*> makeDataSet(){
 
         /* goto start_node */
         do{
+            /* mark */
+            //std::cout << "Line : " << __LINE__ << std::endl;
+
             std::getline(edge_list, str_edge);
             std::stringstream s(str_edge);
             s >> edge_idx >> start_node_idx >> end_node_idx >> weight;
-        }while(start_node_idx != node_idx);
+        }while(!edge_list.eof() && start_node_idx < node_idx);
 
         /* parse edge file */
-        while(edge_list){
+        while(!edge_list.eof() && start_node_idx == node_idx){
+
             /* construct Edge (recur call) */
             edges.push_back(new Edge(end_node_idx, weight, NULL));
 
@@ -128,20 +142,19 @@ std::vector<Node*> makeDataSet(){
             std::stringstream s(str_edge);
             s >> edge_idx >> start_node_idx >> end_node_idx >> weight;
 
-            /* break check */
-            if(start_node_idx != node_idx) break;
+            /* mark */
+            //std::cout << "Line : " << __LINE__ << std::endl;
         }
 
         /* close edge file */
         edge_list.close();
 
         /* construct edge list from edge vector */
-        auto iter = edges.begin();
-        while(iter != edges.end()) (*iter)->_next = (*++iter); //TODO: Check if derefrencing end() assigns NULL to last edge
-        Edge * edge_list_head = new Edge(*edges[0]);
+        for(unsigned i = 1; i < edges.size(); i++)
+            edges[i - 1]->_next = edges[i];
 
         /* construct Node, push to ret */
-        ret.push_back(new Node(latitude, longitude, edge_list_head));
+        ret.push_back(new Node(latitude, longitude, edges[0]));
 
         /* delete edges vector*/
         edges[0]->~Edge();
@@ -257,7 +270,12 @@ int main() {
     }
 
     /* constuct 'circle' subset */
-    //std::vector<Node*> subset = BFS(dataset);
+    std::vector<Node*> subset = BFS(dataset);
+
+    /* printout subset */
+    for(auto elem : subset){
+        std::cout << elem->_x << ", " << elem->_y << std::endl;
+    }
 
     return 0;
 }
