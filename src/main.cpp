@@ -1,6 +1,7 @@
 #include <iostream>
 #include <istream>
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include <queue>
 #include <unordered_set>
@@ -68,38 +69,53 @@ class Node {
 
 /* Convert text files to a friendlier adjancency list */
 std::vector<Node*> makeDataSet(){
-    std::fstream node_list, edge_list;
+    std::ifstream node_list, edge_list;
     std::vector<Edge*> edges;
     std::vector<Node*> ret;
 
+    /* mark */
+    std::cout << "Line : " << __LINE__ << std::endl;
+
     /* open node file */
-    node_list.open("../datasets/california_nodes.txt");
+    node_list.open("datasets/california_nodes.txt", std::ios_base::in);
     if(!node_list.is_open()) return std::vector<Node*>();
+
+    /* mark */
+    std::cout << "Line : " << __LINE__ << std::endl;
 
     /* parse node file */
     while(node_list){
         /* init node data */
-        char * str_node;
+        std::string str_node;
         unsigned node_idx;
         double latitude, longitude;
 
         /* grab node data */
-        node_list.getline(str_node, 50,'\n');
-        node_list >> node_idx >> latitude >> longitude;
+        std::getline(node_list, str_node);
+        std::stringstream s(str_node);
+        s >> node_idx >> latitude >> longitude;
+
+        /* mark */
+        std::cout << "Line : " << __LINE__ << std::endl;
 
         /* open edge file */
-        edge_list.open("../datasets/california_edges.txt");
+        edge_list.open("dataset/california_edges.txt", std::ios_base::in);
+        if(!edge_list.is_open()) return std::vector<Node*>();
+
+        /* mark */
+        std::cout << "Line : " << __LINE__ << std::endl;
 
         /* init edge data */
-        char * str_edge;
+        std::string str_edge;
         unsigned edge_idx;
         unsigned start_node_idx, end_node_idx;
         double weight;
 
         /* goto start_node */
         do{
-            edge_list.getline(str_edge, 50, '\n');
-            edge_list >> edge_idx >> start_node_idx >> end_node_idx >> weight;
+            std::getline(edge_list, str_edge);
+            std::stringstream s(str_edge);
+            s >> edge_idx >> start_node_idx >> end_node_idx >> weight;
         }while(start_node_idx != node_idx);
 
         /* parse edge file */
@@ -108,8 +124,9 @@ std::vector<Node*> makeDataSet(){
             edges.push_back(new Edge(end_node_idx, weight, NULL));
 
             /* grab edge data */
-            edge_list.getline(str_edge, 50, '\n');
-            edge_list >> edge_idx >> start_node_idx >> end_node_idx >> weight;
+            getline(edge_list, str_edge);
+            std::stringstream s(str_edge);
+            s >> edge_idx >> start_node_idx >> end_node_idx >> weight;
 
             /* break check */
             if(start_node_idx != node_idx) break;
@@ -232,10 +249,15 @@ std::vector<Node*> BFS(std::vector<Node*> dataset){
 int main() {
     /* construct adj list from txt files */
     std::vector<Node*> dataset = makeDataSet();
-    if(dataset == std::vector<Node*>()) return 1;
+    if(dataset == std::vector<Node*>()){
+        std::cout << "FAIL" << std::endl;
+    }
+    else{
+        std::cout << "BETTER!!" << std::endl;
+    }
 
     /* constuct 'circle' subset */
-    std::vector<Node*> subset = BFS(dataset);
+    //std::vector<Node*> subset = BFS(dataset);
 
     return 0;
 }
