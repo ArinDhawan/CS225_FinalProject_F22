@@ -24,6 +24,9 @@ class Edge {
         }
 
         ~Edge(){
+            /* mark */
+            //std::cout << "Line : " << __LINE__ << std::endl;
+
             if(!_next) return;
             _next->~Edge();
             delete _next;
@@ -31,6 +34,9 @@ class Edge {
         }
 
         Edge* operator=(const Edge * other){
+            /* mark */
+            //std::cout << "Line : " << __LINE__ << std::endl;
+
             this->~Edge();
             _end_node_idx = other->_end_node_idx;
             _weight = other->_weight;
@@ -65,6 +71,9 @@ class Node {
         Node* operator=(const Node * other){
             if(!other) return NULL;
 
+            /* mark */
+            //std::cout << "Line : " << __LINE__ << std::endl;
+
             _x = other->_x;
             _y = other->_y;
             _edge = (other->_edge) ? new Edge(*(other->_edge)) : NULL;
@@ -82,11 +91,12 @@ std::vector<Node*> makeDataSet(){
     std::vector<Node*> ret;
 
     /* open node file */
-    node_list.open("datasets/california_nodes.txt", std::ios_base::in);
+    node_list.open("datasets/small_nodes.txt", std::ios_base::in);
     if(!node_list.is_open()) return std::vector<Node*>();
 
     /* parse node file */
     while(node_list){
+
         /* init node data */
         std::string str_node;
         unsigned node_idx;
@@ -97,8 +107,12 @@ std::vector<Node*> makeDataSet(){
         std::stringstream s(str_node);
         s >> node_idx >> latitude >> longitude;
 
+        /* mark */
+        //std::cout << "Line : " << __LINE__ << std::endl;
+        //std::cout << "node_idx : " << node_idx << std::endl;
+
         /* open edge file */
-        edge_list.open("datasets/california_edges.txt", std::ios_base::in);
+        edge_list.open("datasets/small_edges.txt", std::ios_base::in);
         if(!edge_list.is_open()) return std::vector<Node*>();
 
         /* init edge data */
@@ -109,13 +123,17 @@ std::vector<Node*> makeDataSet(){
 
         /* goto start_node */
         do{
+            /* mark */
+            //std::cout << "Line : " << __LINE__ << std::endl;
+
             std::getline(edge_list, str_edge);
             std::stringstream s(str_edge);
             s >> edge_idx >> start_node_idx >> end_node_idx >> weight;
-        }while(start_node_idx != node_idx);
+        }while(!edge_list.eof() && start_node_idx < node_idx);
 
         /* parse edge file */
-        while(edge_list){
+        while(!edge_list.eof() && start_node_idx == node_idx){
+
             /* construct Edge (recur call) */
             edges.push_back(new Edge(end_node_idx, weight, NULL));
 
@@ -124,8 +142,8 @@ std::vector<Node*> makeDataSet(){
             std::stringstream s(str_edge);
             s >> edge_idx >> start_node_idx >> end_node_idx >> weight;
 
-            /* break check */
-            if(start_node_idx != node_idx) break;
+            /* mark */
+            //std::cout << "Line : " << __LINE__ << std::endl;
         }
 
         /* close edge file */
