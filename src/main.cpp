@@ -270,7 +270,12 @@ int main() {
     }
 
     /* constuct 'circle' subset */
-    //std::vector<Node*> subset = BFS(dataset);
+    std::vector<Node*> subset = BFS(dataset);
+
+    /* printout subset */
+    for(auto elem : subset){
+        std::cout << elem->_x << ", " << elem->_y << std::endl;
+    }
 
     return 0;
 }
