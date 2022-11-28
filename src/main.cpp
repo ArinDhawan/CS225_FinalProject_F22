@@ -17,6 +17,12 @@ class Edge {
             _next = next;
         }
 
+        Edge(const Edge & other){
+            _end_node_idx = other._end_node_idx;
+            _weight = other._weight;
+            _next = other._next;
+        }
+
         ~Edge(){
             if(!_next) return;
             _next->~Edge();
@@ -24,12 +30,12 @@ class Edge {
             _next = NULL;
         }
 
-        Edge& operator=(const Edge other){
+        Edge* operator=(const Edge * other){
             this->~Edge();
-            _end_node_idx = other._end_node_idx;
-            _weight = other._weight;
-            _next = other._next;
-            return *this;
+            _end_node_idx = other->_end_node_idx;
+            _weight = other->_weight;
+            _next = (other->_next) ? new Edge(*(other->_next)) : NULL;
+            return this;
         }
 
         unsigned _end_node_idx;
@@ -61,7 +67,7 @@ class Node {
 
             _x = other->_x;
             _y = other->_y;
-            _edge = new Edge(*(other->_edge));
+            _edge = (other->_edge) ? new Edge(*(other->_edge)) : NULL;
             return this;
         }
 
