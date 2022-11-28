@@ -56,11 +56,13 @@ class Node {
             _edge->~Edge();
         }
 
-        Node& operator=(const Node other){
-            _x = other._x;
-            _y = other._y;
-            _edge = other._edge;
-            return *this;
+        Node* operator=(const Node * other){
+            if(!other) return NULL;
+
+            _x = other->_x;
+            _y = other->_y;
+            _edge = new Edge(*(other->_edge));
+            return this;
         }
 
         double _x, _y;
@@ -73,15 +75,9 @@ std::vector<Node*> makeDataSet(){
     std::vector<Edge*> edges;
     std::vector<Node*> ret;
 
-    /* mark */
-    std::cout << "Line : " << __LINE__ << std::endl;
-
     /* open node file */
     node_list.open("datasets/california_nodes.txt", std::ios_base::in);
     if(!node_list.is_open()) return std::vector<Node*>();
-
-    /* mark */
-    std::cout << "Line : " << __LINE__ << std::endl;
 
     /* parse node file */
     while(node_list){
@@ -95,15 +91,9 @@ std::vector<Node*> makeDataSet(){
         std::stringstream s(str_node);
         s >> node_idx >> latitude >> longitude;
 
-        /* mark */
-        std::cout << "Line : " << __LINE__ << std::endl;
-
         /* open edge file */
-        edge_list.open("dataset/california_edges.txt", std::ios_base::in);
+        edge_list.open("datasets/california_edges.txt", std::ios_base::in);
         if(!edge_list.is_open()) return std::vector<Node*>();
-
-        /* mark */
-        std::cout << "Line : " << __LINE__ << std::endl;
 
         /* init edge data */
         std::string str_edge;
@@ -136,12 +126,11 @@ std::vector<Node*> makeDataSet(){
         edge_list.close();
 
         /* construct edge list from edge vector */
-        auto iter = edges.begin();
-        while(iter != edges.end()) (*iter)->_next = (*++iter); //TODO: Check if derefrencing end() assigns NULL to last edge
-        Edge * edge_list_head = new Edge(*edges[0]);
+        for(unsigned i = 1; i < edges.size(); i++)
+            edges[i - 1]->_next = edges[i];
 
         /* construct Node, push to ret */
-        ret.push_back(new Node(latitude, longitude, edge_list_head));
+        ret.push_back(new Node(latitude, longitude, edges[0]));
 
         /* delete edges vector*/
         edges[0]->~Edge();
