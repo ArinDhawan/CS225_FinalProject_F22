@@ -302,12 +302,12 @@ int main() {
         /* construct adj list from txt files */
         dataset = makeDataSet(file_list[i].first, file_list[i].second);
 
-        print_to_file("output1", dataset);
+        print_to_file(file_list[i].first.substr(file_list[i].first.find('/') + 1, file_list[i].first.find('_') - file_list[i].first.find('/')) + "output1", dataset);
 
         /* constuct 'circle' subset */
         subset = BFS(dataset);
 
-        print_to_file("output2", subset);
+        print_to_file(file_list[i].first.substr(file_list[i].first.find('/') + 1, file_list[i].first.find('_') - file_list[i].first.find('/')) + "output2", subset);
 
         /* delete */
         deleteSet(dataset);
