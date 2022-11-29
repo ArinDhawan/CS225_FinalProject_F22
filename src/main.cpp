@@ -12,7 +12,8 @@
 /* Edge Class */
 class Edge {
     public:
-        Edge(unsigned start_node_idx, unsigned end_node_idx, double weight, Edge * next){
+        Edge(unsigned idx, unsigned start_node_idx, unsigned end_node_idx, double weight, Edge * next){
+            _idx = idx;
             _start_node_idx = start_node_idx;
             _end_node_idx = end_node_idx;
             _weight = weight;
@@ -20,6 +21,7 @@ class Edge {
         }
 
         Edge(const Edge & other){
+            _idx = other._idx;
             _start_node_idx = other._start_node_idx;
             _end_node_idx = other._end_node_idx;
             _weight = other._weight;
@@ -36,6 +38,7 @@ class Edge {
             _next = NULL;
         }
 
+        unsigned _idx;
         unsigned _start_node_idx, _end_node_idx;
         double _weight;
         Edge * _next;
@@ -44,13 +47,15 @@ class Edge {
 /* Node Class */
 class Node {
     public:
-        Node(double latitude, double longitude, Edge * edge){
+        Node(unsigned idx, double latitude, double longitude, Edge * edge){
+            _idx = idx;
             _x = latitude;
             _y = longitude;
             _edge = edge;
         }
 
         Node(const Node & other){
+            _idx = other._idx;
             _x = other._x;
             _y = other._y;
             _edge = other._edge;
@@ -60,6 +65,7 @@ class Node {
             _edge->~Edge();
         }
 
+        unsigned _idx;
         double _x, _y;
         Edge * _edge;
 };
@@ -131,7 +137,7 @@ std::vector<Node*> makeDataSet(std::string file_name_node, std::string file_name
 
             /* if edge TO target --> load edge */
             if(end_node_idx == node_idx){
-                edges.push_back(Edge(end_node_idx, start_node_idx, weight, NULL));
+                edges.push_back(Edge(edge_idx, start_node_idx, end_node_idx, weight, NULL));
 
                 /* mark */
                 // std::cout << "Line : " << __LINE__ << std::endl;
@@ -144,7 +150,7 @@ std::vector<Node*> makeDataSet(std::string file_name_node, std::string file_name
         while(start_node_idx == node_idx){
 
             /* construct Edge */
-            edges.push_back(Edge(start_node_idx, end_node_idx, weight, NULL));
+            edges.push_back(Edge(edge_idx, start_node_idx, end_node_idx, weight, NULL));
 
             /* mark */
             // std::cout << "Line : " << __LINE__ << std::endl;
@@ -169,7 +175,7 @@ std::vector<Node*> makeDataSet(std::string file_name_node, std::string file_name
         }
 
         /* construct Node, push to ret */
-        ret.push_back(new Node(latitude, longitude, edge_list_head)); //TODO: MEM LEAK HERE
+        ret.push_back(new Node(node_idx, latitude, longitude, edge_list_head)); //TODO: MEM LEAK HERE
 
         /* delete edges vector */
         edges.clear();
@@ -256,21 +262,79 @@ void print_to_file(std::string file_name, std::vector<Node*> set){
     std::ofstream output(file_name);
     if(!output.is_open()) return;
     
+    Edge * ptr;
     for(auto node : set){
-        Edge * ptr = node->_edge;
+        output << node->_idx << " : " << node->_x << ", " << node->_y << std::endl;
 
-        if(ptr){
-            output << ptr->_start_node_idx << " : " << node->_x << ", " << node->_y << std::endl;
-        }
-        else{
-            output << "UNKNOWN" << " : " << node->_x << ", " << node->_y << std::endl;
-        }
-        
+        ptr = node->_edge;
+
         while(ptr){
-            output << ptr->_start_node_idx << ", " << ptr->_end_node_idx << std::endl;
+            output  << ptr->_start_node_idx << ", "
+                << ptr->_end_node_idx
+                << std::endl;
+            
             ptr = ptr->_next;
         }
     }
+    output.close();
+}
+
+void print_node_file(std::string file_name, std::vector<Node*> set){
+    std::ofstream output(file_name);
+    if(!output.is_open()) return;
+    
+    for(auto node : set){
+        output << node->_idx << " " << node->_x << " " << node->_y << std::endl;
+    }
+    output.close();
+}
+
+void print_edge_file(std::string file_name, std::vector<Node*> set){
+    std::ofstream output(file_name);
+    if(!output.is_open()) return;
+
+    for(auto node : set){
+        Edge * ptr = node->_edge;
+
+        while(ptr){
+            output << ptr->_idx << " "
+                << ptr->_start_node_idx << " "
+                << ptr->_end_node_idx << " "
+                << ptr->_weight
+                << std::endl;
+            
+            ptr = ptr->_next;
+        }
+    }
+    output.close();
+}
+
+void compare_file(std::string file_name_out, std::string file_name_test, std::string file_name_orig){
+    std::ofstream output(file_name_out);
+    if(!output.is_open()) return;
+
+    std::ifstream input_test(file_name_test), input_orig(file_name_orig);
+    if(!input_test.is_open() || !input_orig.is_open()) return;
+
+    /* check */
+    std::string str_test, str_orig;
+    double temp_test, temp_orig;
+    while(!input_test.eof() && !input_orig.eof()){
+        std::getline(input_test, str_test);
+        std::getline(input_orig, str_orig);
+        std::stringstream s_t(str_test), s_o(str_orig);
+
+        while(temp_test != '\n' && temp_orig != '\n'){
+            s_t >> temp_test;
+            s_o >> temp_orig;
+
+            if(temp_test != temp_orig){
+                output << str_test << str_orig << std::endl;
+            }
+        }
+    }
+    input_test.close();
+    input_orig.close();
     output.close();
 }
 
@@ -284,30 +348,37 @@ void deleteSet(std::vector<Node*> set){
 
 int main() {
 
-    /*Vector String Testcase Files*/
+    /* Vector String Testcase Files */
     std::vector<std::pair<std::string, std::string>> file_list;
 
-    /*Load vector with test cases - Comment/Uncomment test cases to select them!*/
+    /* Load vector with test cases - Comment/Uncomment test cases to select them! */
     file_list.push_back({"datasets/verysmall_nodes.txt", "datasets/verysmall_edges.txt"});
     // file_list.push_back({"datasets/california_nodes.txt", "datasets/california_edges.txt"});
     // file_list.push_back({"datasets/san_francisco_nodes.txt", "datasets/san_francisco_edges.txt"});
-    file_list.push_back({"datasets/small_nodes.txt", "datasets/small_edges.txt"});
+    //file_list.push_back({"datasets/small_nodes.txt", "datasets/small_edges.txt"});
 
     /*Declare vars*/
     std::vector<Node*> subset;  
     std::vector<Node*> dataset;  
 
+    std::string curr_nodes, curr_edges;
     for(int i = 0; i < file_list.size(); i++){
+        curr_nodes = file_list[i].first;
+        curr_edges = file_list[i].second;
 
         /* construct adj list from txt files */
-        dataset = makeDataSet(file_list[i].first, file_list[i].second);
-
-        print_to_file(file_list[i].first.substr(file_list[i].first.find('/') + 1, file_list[i].first.find('_') - file_list[i].first.find('/')) + "output1", dataset);
+        dataset = makeDataSet(curr_nodes, curr_edges);
 
         /* constuct 'circle' subset */
         subset = BFS(dataset);
 
-        print_to_file(file_list[i].first.substr(file_list[i].first.find('/') + 1, file_list[i].first.find('_') - file_list[i].first.find('/')) + "output2", subset);
+        /* make output file */
+        print_node_file(curr_nodes.substr(curr_nodes.find('/') + 1, curr_nodes.find_last_of('.') - curr_nodes.find('/')) + "output.txt", subset);
+        print_edge_file(curr_edges.substr(curr_edges.find('/') + 1, curr_edges.find_last_of('.') - curr_edges.find('/')) + "output.txt", subset);
+
+        /* compare to input file */
+        //compare_file("compare_node.txt", curr_nodes, curr_nodes.substr(curr_nodes.find('/') + 1, curr_nodes.find_last_of('_') - curr_nodes.find('.')) + "output.txt");
+        //compare_file("compare_edge.txt", curr_edges, curr_edges.substr(curr_edges.find('/') + 1, curr_edges.find_last_of('_') - curr_edges.find('.')) + "output.txt");
 
         /* delete */
         deleteSet(dataset);
