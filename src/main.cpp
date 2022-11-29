@@ -30,22 +30,10 @@ class Edge {
             /* mark */
             //std::cout << "Line : " << __LINE__ << std::endl;
 
-            if(!_next) return;
+            if(!this || !_next) return;
             _next->~Edge();
             delete _next;
             _next = NULL;
-        }
-
-        Edge* operator=(const Edge * other){
-            /* mark */
-            std::cout << "Line : " << __LINE__ << std::endl;
-
-            this->~Edge();
-            _start_node_idx = other->_start_node_idx;
-            _end_node_idx = other->_end_node_idx;
-            _weight = other->_weight;
-            _next = (other->_next) ? new Edge(*(other->_next)) : NULL;
-            return this;
         }
 
         unsigned _start_node_idx, _end_node_idx;
@@ -70,18 +58,6 @@ class Node {
 
         ~Node(){
             _edge->~Edge();
-        }
-
-        Node* operator=(const Node * other){
-            if(!other) return NULL;
-
-            /* mark */
-            //std::cout << "Line : " << __LINE__ << std::endl;
-
-            _x = other->_x;
-            _y = other->_y;
-            _edge = (other->_edge) ? new Edge(*(other->_edge)) : NULL;
-            return this;
         }
 
         double _x, _y;
@@ -187,7 +163,7 @@ std::vector<Node*> makeDataSet(){
         }
 
         /* construct Node, push to ret */
-        ret.push_back(new Node(latitude, longitude, edge_list_head));
+        ret.push_back(new Node(latitude, longitude, edge_list_head)); //TODO: MEM LEAK HERE
 
         /* delete edges vector */
         edges.clear();
@@ -227,11 +203,11 @@ std::vector<Node*> BFS(std::vector<Node*> dataset){
     double __RADIUS_SQR = std::pow((double)(user.second), 2);
 
     /* push center node */
-    queue.push(new Node(*dataset[__CENTER_IDX]));
+    queue.push(new Node(*dataset[__CENTER_IDX])); //TODO: MEM LEAK HERE
     visited.insert(__CENTER_IDX);
     while(!queue.empty()){
         /* push to ret + pop */
-        ret.push_back(queue.front());
+        ret.push_back(new Node(*queue.front())); //TODO: MEM LEAK HERE
         queue.pop();
 
         /* parse adjacent nodes via front node's edge list */
@@ -241,7 +217,7 @@ std::vector<Node*> BFS(std::vector<Node*> dataset){
             if(visited.find(edge_list->_end_node_idx) == visited.end() && (std::pow(dataset[edge_list->_end_node_idx]->_x - 
             dataset[__CENTER_IDX]->_x, 2) + std::pow(dataset[edge_list->_end_node_idx]->_y - dataset[__CENTER_IDX]->_y, 2) <= __RADIUS_SQR)){
                 /* push unvisited adj node + mark as visited */
-                queue.push(new Node(*dataset[edge_list->_end_node_idx]));
+                queue.push(new Node(*dataset[edge_list->_end_node_idx])); //TODO: MEM LEAK HERE
                 visited.insert(edge_list->_end_node_idx);
             }
             edge_list = edge_list->_next;
@@ -270,6 +246,12 @@ void printSet(std::vector<Node*> set){
     }
 }
 
+void deleteSet(std::vector<Node*> set){
+    for(auto it = set.begin(); it != set.end(); it++){
+        (*it)->_edge->~Edge();
+    }
+}
+
 
 int main() {
     /* construct adj list from txt files */
@@ -281,6 +263,10 @@ int main() {
     std::vector<Node*> subset = BFS(dataset);
 
     printSet(subset);
+
+    /* delete */
+    deleteSet(dataset);
+    deleteSet(subset);
 
     return 0;
 }
