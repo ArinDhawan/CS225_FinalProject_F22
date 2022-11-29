@@ -64,16 +64,13 @@ class Node {
         Edge * _edge;
 };
 
-//Test Suite
-
-
-
-
 /* Convert text files to a friendlier adjancency list */
+int list_size;
 std::vector<Node*> makeDataSet(std::string file_name_node, std::string file_name_edge){
     std::ifstream node_list, edge_list;
     std::vector<Edge> edges;
     std::vector<Node*> ret;
+    
     
 
     /* open node file */
@@ -177,23 +174,43 @@ std::vector<Node*> makeDataSet(std::string file_name_node, std::string file_name
     /* close node file */
     node_list.close();
 
+    /* Get list size */
+    list_size = ret.size();
+
     /* return */
     return ret;
 }
 
 std::pair<unsigned, double> getUserInput(){
     /* get center node # */
-    unsigned user_node;
+    int user_node_get;
     std::cout << "ENTER CENTER NODE # : " << std::endl;
-    std::cin >> user_node;
+    std::cin >> user_node_get;
+
+    /* Check if valid  user_node_get input */
+    while(user_node_get > list_size || user_node_get < 0){
+        std::cout << "CENTER NODE OUT OF BOUNDS, RETRY" << std::endl;
+        std::cin >> user_node_get;
+    }
+    //Convert user input to unsigned
+    unsigned user_node = (unsigned) user_node_get;
+
 
     /* get radius */
     double radius;
     std::cout << "ENTER RADIUS : " << std::endl;
     std::cin >> radius;
+    /* Check if valid radius inpput */
+
+    while(radius < 0){
+        std::cout << "RADIUS CANT BE NEGATIVE, RETRY : " << std::endl;
+        std::cin >> radius;
+    }
 
     /* return */
     return std::pair<unsigned, double>({user_node, radius});
+
+
 }
 
 std::vector<Node*> BFS(std::vector<Node*> dataset){
@@ -284,6 +301,8 @@ void deleteSet(std::vector<Node*> set){
 
 int main() {
 
+
+    //TEST SUITE 1:
     /*Vector String Testcase Files*/
     std::vector<std::pair<std::string, std::string>> file_list;
 
@@ -292,6 +311,21 @@ int main() {
     // file_list.push_back({"datasets/california_nodes.txt", "datasets/california_edges.txt"});
     // file_list.push_back({"datasets/san_francisco_nodes.txt", "datasets/san_francisco_edges.txt"});
     file_list.push_back({"datasets/small_nodes.txt", "datasets/small_edges.txt"});
+
+    //TEST SUITE 2:
+    /* Check User Inputs - TRUE = TEST ENABLE, FALSE = TEST DISABLED */
+    bool TEST_2 = true;
+    if(TEST_2){
+        std::cout << "TESTING USER INPUT SYSTEM" << std::endl;
+        std::cout << "(Enter out of bounds values to test)" << std::endl;
+        std::vector<Node*> test_dataset = makeDataSet(file_list[0].first, file_list[0].second);
+        /* Call getUserInput - USE BAD INPUTS TO TEST*/
+        std::pair<unsigned, double> user = getUserInput();
+        std::cout << "USER INPUT TEST PASS" << std::endl;
+
+    }
+
+
 
     /*Declare vars*/
     std::vector<Node*> subset;  
