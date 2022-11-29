@@ -228,7 +228,7 @@ std::vector<Node*> BFS(std::vector<Node*> dataset){
     return ret;
 }
 
-void printSet(std::vector<Node*> set){
+void print(std::vector<Node*> set){
     for(auto node : set){
         Edge * ptr = node->_edge;
 
@@ -246,6 +246,28 @@ void printSet(std::vector<Node*> set){
     }
 }
 
+void print_to_file(std::string file_name, std::vector<Node*> set){
+    std::ofstream output(file_name);
+    if(!output.is_open()) return;
+    
+    for(auto node : set){
+        Edge * ptr = node->_edge;
+
+        if(ptr){
+            output << ptr->_start_node_idx << " : " << node->_x << ", " << node->_y << std::endl;
+        }
+        else{
+            output << "UNKNOWN" << " : " << node->_x << ", " << node->_y << std::endl;
+        }
+        
+        while(ptr){
+            output << ptr->_start_node_idx << ", " << ptr->_end_node_idx << std::endl;
+            ptr = ptr->_next;
+        }
+    }
+    output.close();
+}
+
 void deleteSet(std::vector<Node*> set){
     for(auto it = set.begin(); it != set.end(); it++){
         (*it)->_edge->~Edge();
@@ -257,12 +279,12 @@ int main() {
     /* construct adj list from txt files */
     std::vector<Node*> dataset = makeDataSet();
 
-    printSet(dataset);
+    print_to_file("output1.txt", dataset);
 
     /* constuct 'circle' subset */
     std::vector<Node*> subset = BFS(dataset);
 
-    printSet(subset);
+    print_to_file("output2.txt", subset);
 
     /* delete */
     deleteSet(dataset);
