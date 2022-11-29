@@ -95,7 +95,7 @@ std::vector<Node*> makeDataSet(){
     std::vector<Node*> ret;
 
     /* open node file */
-    node_list.open("datasets/verysmall_nodes.txt", std::ios_base::in);
+    node_list.open("datasets/small_nodes.txt", std::ios_base::in);
     if(!node_list.is_open()) return std::vector<Node*>();
 
     /**
@@ -125,7 +125,7 @@ std::vector<Node*> makeDataSet(){
         //std::cout << "node_idx : " << node_idx << std::endl;
 
         /* open edge file */
-        edge_list.open("datasets/verysmall_edges.txt", std::ios_base::in);
+        edge_list.open("datasets/small_edges.txt", std::ios_base::in);
         if(!edge_list.is_open()) return std::vector<Node*>();
 
         /* init edge data */
@@ -256,7 +256,13 @@ void printSet(std::vector<Node*> set){
     for(auto node : set){
         Edge * ptr = node->_edge;
 
-        std::cout << ptr->_start_node_idx << " : " << node->_x << ", " << node->_y << std::endl;
+        if(ptr){
+            std::cout << ptr->_start_node_idx << " : " << node->_x << ", " << node->_y << std::endl;
+        }
+        else{
+            std::cout << "UNKNOWN" << " : " << node->_x << ", " << node->_y << std::endl;
+        }
+        
         while(ptr){
             std::cout << ptr->_start_node_idx << ", " << ptr->_end_node_idx << std::endl;
             ptr = ptr->_next;
