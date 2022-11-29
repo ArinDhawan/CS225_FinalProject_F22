@@ -64,14 +64,20 @@ class Node {
         Edge * _edge;
 };
 
+//Test Suite
+
+
+
+
 /* Convert text files to a friendlier adjancency list */
-std::vector<Node*> makeDataSet(){
+std::vector<Node*> makeDataSet(std::string file_name_node, std::string file_name_edge){
     std::ifstream node_list, edge_list;
     std::vector<Edge> edges;
     std::vector<Node*> ret;
+    
 
     /* open node file */
-    node_list.open("datasets/verysmall_nodes.txt", std::ios_base::in);
+    node_list.open(file_name_node, std::ios_base::in);
     if(!node_list.is_open()) return std::vector<Node*>();
 
     /**
@@ -101,7 +107,7 @@ std::vector<Node*> makeDataSet(){
         //std::cout << "node_idx : " << node_idx << std::endl;
 
         /* open edge file */
-        edge_list.open("datasets/verysmall_edges.txt", std::ios_base::in);
+        edge_list.open(file_name_edge, std::ios_base::in);
         if(!edge_list.is_open()) return std::vector<Node*>();
 
         /* init edge data */
@@ -250,23 +256,44 @@ void deleteSet(std::vector<Node*> set){
     for(auto it = set.begin(); it != set.end(); it++){
         (*it)->_edge->~Edge();
     }
+    set.clear();
 }
 
 
 int main() {
-    /* construct adj list from txt files */
-    std::vector<Node*> dataset = makeDataSet();
 
-    printSet(dataset);
+    /*Vector String Testcase Files*/
+    std::vector<std::pair<std::string, std::string>> file_list;
+    /*Load vector with test cases - Comment/Uncomment test cases to select them!*/
+    file_list.push_back({"datasets/verysmall_nodes.txt", "datasets/verysmall_edges.txt"});
+    // file_list.push_back({"datasets/california_nodes.txt", "datasets/california_edges.txt"});
+    // file_list.push_back({"datasets/san_francisco_nodes.txt", "datasets/san_francisco_edges.txt"});
+    file_list.push_back({"datasets/small_nodes.txt", "datasets/small_edges.txt"});
 
-    /* constuct 'circle' subset */
-    std::vector<Node*> subset = BFS(dataset);
+    /*Declare vars*/
+    std::vector<Node*> subset;  
+    std::vector<Node*> dataset;  
 
-    printSet(subset);
+    for(int i = 0; i < file_list.size(); i++){
 
-    /* delete */
-    deleteSet(dataset);
-    deleteSet(subset);
+        /* construct adj list from txt files */
+        dataset = makeDataSet(file_list[i].first, file_list[i].second);
+
+        printSet(dataset);
+
+        /* constuct 'circle' subset */
+        subset = BFS(dataset);
+
+        printSet(subset);
+
+        /* delete */
+        deleteSet(dataset);
+        deleteSet(subset);
+
+    }
+
+
+
 
     return 0;
 }
