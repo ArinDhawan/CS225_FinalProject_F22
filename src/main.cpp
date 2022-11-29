@@ -284,11 +284,9 @@ void deleteSet(std::vector<Node*> set){
 
 int main() {
 
-<<<<<<< HEAD
-    print_to_file("output1.txt", dataset);
-=======
     /*Vector String Testcase Files*/
     std::vector<std::pair<std::string, std::string>> file_list;
+
     /*Load vector with test cases - Comment/Uncomment test cases to select them!*/
     file_list.push_back({"datasets/verysmall_nodes.txt", "datasets/verysmall_edges.txt"});
     // file_list.push_back({"datasets/california_nodes.txt", "datasets/california_edges.txt"});
@@ -304,26 +302,18 @@ int main() {
         /* construct adj list from txt files */
         dataset = makeDataSet(file_list[i].first, file_list[i].second);
 
-        printSet(dataset);
+        print_to_file("output1", dataset);
 
         /* constuct 'circle' subset */
         subset = BFS(dataset);
 
-        printSet(subset);
+        print_to_file("output2", subset);
 
         /* delete */
         deleteSet(dataset);
         deleteSet(subset);
 
     }
->>>>>>> da018d828947de6f15e6d53792d61f6c4bf7b490
-
-
-<<<<<<< HEAD
-    print_to_file("output2.txt", subset);
-=======
->>>>>>> da018d828947de6f15e6d53792d61f6c4bf7b490
-
 
     return 0;
 }
