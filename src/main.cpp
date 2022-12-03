@@ -259,15 +259,9 @@ std::vector<Node*> BFS(std::vector<Node*> dataset){
 
 void print(std::vector<Node*> set){
     for(auto node : set){
-        Edge * ptr = node->_edge;
-
-        if(ptr){
-            std::cout << ptr->_start_node_idx << " : " << node->_x << ", " << node->_y << std::endl;
-        }
-        else{
-            std::cout << "UNKNOWN" << " : " << node->_x << ", " << node->_y << std::endl;
-        }
+        std::cout << node->_idx << " : " << node->_x << ", " << node->_y << std::endl;
         
+        Edge * ptr = node->_edge;
         while(ptr){
             std::cout << ptr->_start_node_idx << ", " << ptr->_end_node_idx << std::endl;
             ptr = ptr->_next;
@@ -357,7 +351,7 @@ void compare_file(std::string file_name_out, std::string file_name_test, std::st
 
 void deleteSet(std::vector<Node*> set){
     for(auto it = set.begin(); it != set.end(); it++){
-        (*it)->_edge->~Edge();
+        (*it)->~Node();
     }
     set.clear();
 }
@@ -365,24 +359,21 @@ void deleteSet(std::vector<Node*> set){
 
 int main() {
 
-<<<<<<< HEAD
-    /* Vector String Testcase Files */
-=======
 
     //TEST SUITE 1:
     /*Vector String Testcase Files*/
->>>>>>> 01d476bb2a77b8a68d5252807cff1b9ca0c7e8ad
     std::vector<std::pair<std::string, std::string>> file_list;
 
     /* Load vector with test cases - Comment/Uncomment test cases to select them! */
-    file_list.push_back({"datasets/verysmall_nodes.txt", "datasets/verysmall_edges.txt"});
+    file_list.push_back({"datasets/supersmall_nodes.txt", "datasets/supersmall_edges.txt"});
+    //file_list.push_back({"datasets/verysmall_nodes.txt", "datasets/verysmall_edges.txt"});
+    //file_list.push_back({"datasets/small_nodes.txt", "datasets/small_edges.txt"});
     // file_list.push_back({"datasets/california_nodes.txt", "datasets/california_edges.txt"});
     // file_list.push_back({"datasets/san_francisco_nodes.txt", "datasets/san_francisco_edges.txt"});
-    //file_list.push_back({"datasets/small_nodes.txt", "datasets/small_edges.txt"});
 
     //TEST SUITE 2:
     /* Check User Inputs - TRUE = TEST ENABLE, FALSE = TEST DISABLED */
-    bool TEST_2 = true;
+    bool TEST_2 = false;
     if(TEST_2){
         std::cout << "TESTING USER INPUT SYSTEM" << std::endl;
         std::cout << "(Enter out of bounds values to test)" << std::endl;
@@ -408,11 +399,14 @@ int main() {
         dataset = makeDataSet(curr_nodes, curr_edges);
 
         /* constuct 'circle' subset */
-        subset = BFS(dataset);
+        //subset = BFS(dataset);
 
         /* make output file */
-        print_node_file(curr_nodes.substr(curr_nodes.find('/') + 1, curr_nodes.find_last_of('.') - curr_nodes.find('/')) + "output.txt", subset);
-        print_edge_file(curr_edges.substr(curr_edges.find('/') + 1, curr_edges.find_last_of('.') - curr_edges.find('/')) + "output.txt", subset);
+        //print_node_file(curr_nodes.substr(curr_nodes.find('/') + 1, curr_nodes.find_last_of('.') - curr_nodes.find('/')) + "output.txt", subset);
+        //print_edge_file(curr_edges.substr(curr_edges.find('/') + 1, curr_edges.find_last_of('.') - curr_edges.find('/')) + "output.txt", subset);
+
+        /* print to console */
+        print(dataset);
 
         /* compare to input file */
         //compare_file("compare_node.txt", curr_nodes, curr_nodes.substr(curr_nodes.find('/') + 1, curr_nodes.find_last_of('_') - curr_nodes.find('.')) + "output.txt");
@@ -420,7 +414,7 @@ int main() {
 
         /* delete */
         deleteSet(dataset);
-        deleteSet(subset);
+        //deleteSet(subset);
 
     }
 
