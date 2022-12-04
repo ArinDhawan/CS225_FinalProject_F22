@@ -9,66 +9,9 @@
 #include <string>
 #include <cmath>
 
-/* Edge Class */
-class Edge {
-    public:
-        Edge(unsigned idx, unsigned start_node_idx, unsigned end_node_idx, double weight, Edge * next){
-            _idx = idx;
-            _start_node_idx = start_node_idx;
-            _end_node_idx = end_node_idx;
-            _weight = weight;
-            _next = next;
-        }
+#include "../src/Node.cpp"
+#include "../src/Edge.cpp"
 
-        Edge(const Edge & other){
-            _idx = other._idx;
-            _start_node_idx = other._start_node_idx;
-            _end_node_idx = other._end_node_idx;
-            _weight = other._weight;
-            _next = other._next;
-        }
-
-        ~Edge(){
-            /* mark */
-            //std::cout << "Line : " << __LINE__ << std::endl;
-
-            if(!this || !_next) return;
-            _next->~Edge();
-            delete _next;
-            _next = NULL;
-        }
-
-        unsigned _idx;
-        unsigned _start_node_idx, _end_node_idx;
-        double _weight;
-        Edge * _next;
-};
-
-/* Node Class */
-class Node {
-    public:
-        Node(unsigned idx, double latitude, double longitude, Edge * edge){
-            _idx = idx;
-            _x = latitude;
-            _y = longitude;
-            _edge = edge;
-        }
-
-        Node(const Node & other){
-            _idx = other._idx;
-            _x = other._x;
-            _y = other._y;
-            _edge = other._edge;
-        }
-
-        ~Node(){
-            _edge->~Edge();
-        }
-
-        unsigned _idx;
-        double _x, _y;
-        Edge * _edge;
-};
 
 /* Convert text files to a friendlier adjancency list */
 int list_size;
@@ -214,48 +157,11 @@ std::pair<unsigned, double> getUserInput(){
     }
 
     /* return */
-    return std::pair<unsigned, double>({user_node, radius});
+    return std::pair<unsigned, double>(user_node, radius);
 
 
 }
 
-std::vector<Node*> BFS(std::vector<Node*> dataset){
-    /* init data */
-    std::vector<Node*> ret;
-    std::unordered_set<unsigned> visited;
-    std::queue<Node*> queue;
-    Edge * edge_list;
-
-    /* center globals */
-    std::pair<unsigned, double> user = getUserInput();
-    unsigned __CENTER_IDX = user.first;
-    double __RADIUS_SQR = std::pow((double)(user.second), 2);
-
-    /* push center node */
-    queue.push(new Node(*dataset[__CENTER_IDX])); //TODO: MEM LEAK HERE
-    visited.insert(__CENTER_IDX);
-    while(!queue.empty()){
-        /* push to ret + pop */
-        ret.push_back(new Node(*queue.front())); //TODO: MEM LEAK HERE
-        queue.pop();
-
-        /* parse adjacent nodes via front node's edge list */
-        edge_list = (ret.back())->_edge;
-        while(edge_list){
-            /* check if adj node is visited OR OUTSIDE RADIUS */
-            if(visited.find(edge_list->_end_node_idx) == visited.end() && (std::pow(dataset[edge_list->_end_node_idx]->_x - 
-            dataset[__CENTER_IDX]->_x, 2) + std::pow(dataset[edge_list->_end_node_idx]->_y - dataset[__CENTER_IDX]->_y, 2) <= __RADIUS_SQR)){
-                /* push unvisited adj node + mark as visited */
-                queue.push(new Node(*dataset[edge_list->_end_node_idx])); //TODO: MEM LEAK HERE
-                visited.insert(edge_list->_end_node_idx);
-            }
-            edge_list = edge_list->_next;
-        }
-    }
-
-    /* return :) */
-    return ret;
-}
 
 void print(std::vector<Node*> set){
     for(auto node : set){
@@ -358,14 +264,14 @@ void deleteSet(std::vector<Node*> set){
 
 
 int main() {
-
+    std::cout << "Fuck you Fuck fuck you!!1!" << std::endl;
 
     //TEST SUITE 1:
     /*Vector String Testcase Files*/
-    std::vector<std::pair<std::string, std::string>> file_list;
+    std::vector<std::pair<std::string, std::string > > file_list;
 
     /* Load vector with test cases - Comment/Uncomment test cases to select them! */
-    file_list.push_back({"datasets/supersmall_nodes.txt", "datasets/supersmall_edges.txt"});
+    file_list.push_back(std::make_pair("../datasets/supersmall_nodes.txt", "../datasets/supersmall_edges.txt"));
     //file_list.push_back({"datasets/verysmall_nodes.txt", "datasets/verysmall_edges.txt"});
     //file_list.push_back({"datasets/small_nodes.txt", "datasets/small_edges.txt"});
     // file_list.push_back({"datasets/california_nodes.txt", "datasets/california_edges.txt"});
