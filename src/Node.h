@@ -7,7 +7,9 @@
 
 class Node {
     public:
-        Node(unsigned idx, double latitude, double longitude, Edge * edge); // Assignment
+        Node();
+        
+        Node(unsigned idx, double latitude, double longitude, std::vector<Edge> edges); // Assignment
 
         Node(const Node & other); // Copy
 
@@ -15,8 +17,7 @@ class Node {
 
         unsigned _idx;
         double _x, _y;
-        Edge * _edge;
-
+        std::vector<Edge> _edges;
 };
 
 #endif

@@ -5,8 +5,9 @@
 #include "Node.cpp"
 #include "Edge.cpp"
 
-
-std::vector<Node*> BFS(std::vector<Node*> dataset);
- 
+class BFS {
+    public: 
+        std::vector<Node> makeSubset(std::vector<Node> dataset);
+};
 
 #endif
