@@ -330,6 +330,23 @@ bool compare_file(std::string file_name_out, std::string file_name_test, std::st
     return ret;
 }
 
+/* render given dataset as PNG of dim side_size by side_size */
+void render(std::vector<Node> dataset, unsigned side_size){
+    /* define coordinate transform function constants*/
+    std::pair<unsigned, double> user = getUserInput();
+    unsigned __CENTER_IDX = user.first;
+    double __RADIUS = user.second;
+
+    //offset such that (long, lat)(Cx, Cy) --> (Pix_x, Pix_y)(0, 0)
+    double Cx = dataset[__CENTER_IDX]._x - __RADIUS, Cy = dataset[__CENTER_IDX]._y + __RADIUS;
+
+    //x-scale factor such that ((Cx + 1) * Kx, Cy) --> (1, 0)
+    double Kx = side_size / (2 * __RADIUS);
+
+    //y-scale factor such that (Cx, (Cy - 1) * Ky) --> (0, 1)
+    double Ky = -1 * side_size / (2 * __RADIUS);
+}
+
 int main() {
     //std::cout << "Fuck you Fuck fuck you!!1!" << std::endl;
 
