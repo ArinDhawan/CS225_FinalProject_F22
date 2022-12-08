@@ -5,7 +5,6 @@
   _start_node_idx = start_node_idx;
   _end_node_idx = end_node_idx;
   _weight = weight;
-  _next = next;
 }
 
 Edge::Edge(const Edge & other){
@@ -13,17 +12,10 @@ Edge::Edge(const Edge & other){
   _start_node_idx = other._start_node_idx;
   _end_node_idx = other._end_node_idx;
   _weight = other._weight;
-  _next = other._next;
 }
 
 Edge::~Edge(){
-  /* mark */
-  //std::cout << "Line : " << __LINE__ << std::endl;
-
-    if(!this || !_next) return;
-    _next->~Edge();
-    delete _next;
-    _next = NULL;
+  /* nothing */
 }
 
 

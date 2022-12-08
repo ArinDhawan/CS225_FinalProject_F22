@@ -29,7 +29,6 @@ class Edge {
         unsigned _idx;
         unsigned _start_node_idx, _end_node_idx;
         double _weight;
-        Edge * _next;
 };
 
 
