@@ -329,7 +329,7 @@ int main() {
 
     //TEST SUITE 2:
     /* Check User Inputs - TRUE = TEST ENABLE, FALSE = TEST DISABLED */
-    bool TEST_2 = false;
+    bool TEST_2 = true;
     if(TEST_2){
         std::cout << "TESTING USER INPUT SYSTEM" << std::endl;
         std::cout << "(Enter out of bounds values to test)" << std::endl;
