@@ -122,6 +122,7 @@ std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_
     return ret;
 }
 
+/* User Input for BFS */
 std::pair<unsigned, double> getUserInput(){
     /* get center node # */
     int user_node_get;
@@ -154,6 +155,7 @@ std::pair<unsigned, double> getUserInput(){
 
 }
 
+/* BFS */
 std::vector<Node> makeSubset(std::vector<Node> dataset){
     /* init data */
     std::queue<Node> queue;
@@ -200,6 +202,7 @@ std::vector<Node> makeSubset(std::vector<Node> dataset){
     return ret;
 }
 
+/* sortSet helper */
 unsigned getIdx(std::vector<Node>& arr, unsigned low, unsigned high){
     Node pivot_node = arr[high];
     unsigned i = low - 1;
@@ -215,6 +218,7 @@ unsigned getIdx(std::vector<Node>& arr, unsigned low, unsigned high){
     return i + 1;
 }
 
+/* sortSet helper */
 void quickSort(std::vector<Node>& arr, unsigned low, unsigned high){
     if(low < high){
         unsigned idx = getIdx(arr, low, high);
@@ -223,11 +227,13 @@ void quickSort(std::vector<Node>& arr, unsigned low, unsigned high){
     }
 }
 
+/* sort given dataset by Node Idx */
 void sortSet(std::vector<Node>& dataset){
     /* call quick sort algo */
     quickSort(dataset, 0, dataset.size() - 1);
 }
 
+/* print dataset to terminal */
 void print(std::vector<Node> set){
     std::vector<Node> copy = set;
     sortSet(copy);
@@ -240,6 +246,8 @@ void print(std::vector<Node> set){
     }
 }
 
+//TODO finish function -- call sortSet
+/* print function but to output file */
 void print_to_file(std::string file_name, std::vector<Node> set){
     std::ofstream output(file_name);
     if(!output.is_open()) return;
@@ -257,6 +265,8 @@ void print_to_file(std::string file_name, std::vector<Node> set){
     output.close();
 }
 
+//TODO finish function -- call sortSet
+/* print dataset in CSV format */
 void print_node_file(std::string file_name, std::vector<Node> set){
     std::ofstream output(file_name);
     if(!output.is_open()) return;
@@ -267,6 +277,8 @@ void print_node_file(std::string file_name, std::vector<Node> set){
     output.close();
 }
 
+//TODO finish function -- call sortSet
+/* print dataset in CSV format */
 void print_edge_file(std::string file_name, std::vector<Node> set){
     std::ofstream output(file_name);
     if(!output.is_open()) return;
@@ -284,12 +296,15 @@ void print_edge_file(std::string file_name, std::vector<Node> set){
 }
 
 //TODO finish function
-void compare_file(std::string file_name_out, std::string file_name_test, std::string file_name_orig){
+/* return true if exact copies, print differences to output file */
+bool compare_file(std::string file_name_out, std::string file_name_test, std::string file_name_orig){
+    bool ret = false;
+
     std::ofstream output(file_name_out);
-    if(!output.is_open()) return;
+    if(!output.is_open()) return false;
 
     std::ifstream input_test(file_name_test), input_orig(file_name_orig);
-    if(!input_test.is_open() || !input_orig.is_open()) return;
+    if(!input_test.is_open() || !input_orig.is_open()) return false;
 
     /* check */
     std::string str_test, str_orig;
@@ -311,6 +326,8 @@ void compare_file(std::string file_name_out, std::string file_name_test, std::st
     input_test.close();
     input_orig.close();
     output.close();
+
+    return ret;
 }
 
 int main() {
