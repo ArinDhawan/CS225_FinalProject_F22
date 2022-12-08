@@ -4,14 +4,16 @@
 #include <sstream>
 #include <vector>
 #include <queue>
-#include <unordered_set>
 #include <utility>
 #include <string>
 #include <cmath>
 
 #include "../src/Node.h"
 #include "../src/BFS.h"
-#include "../lib/cs225"
+#include "../lib/cs225/PNG.h"
+#include "../lib/cs225/HSLAPixel.h"
+
+using namespace cs225;
 
 
 /* Convert text files to a friendlier adjancency list */
@@ -152,8 +154,6 @@ std::pair<unsigned, double> getUserInput(){
 
     /* return */
     return std::pair<unsigned, double>(user_node, radius);
-
-
 }
 
 /* BFS */
@@ -347,7 +347,24 @@ PNG render(std::vector<Node> dataset, unsigned side_size){
     //y-scale factor such that (Cx, (Cy - 1) * Ky) --> (0, 1)
     double Ky = -1 * side_size / (2 * __RADIUS);
 
-    return PNG();
+    /* init PNG ret */
+    PNG ret(side_size, side_size);
+
+    /* parse dataset and load nodes to PNG */
+    unsigned pix_x, pix_y;
+    for(auto node : dataset){
+        /* color 3 by 3 pix square for each node */
+        pix_x = std::floor((node._x - Cx) * Kx), pix_y = std::floor((node._y - Cy) * Ky);
+        for(unsigned i = pix_x; i < pix_x + 3; i++){
+            for(unsigned j = pix_y; j < pix_y + 3; j++){
+                /* turn curr_pix to black */
+                ret.getPixel(i, j).l = 0;
+            }
+        }
+    }
+
+    /* return */
+    return ret;
 }
 
 int main() {
@@ -391,16 +408,14 @@ int main() {
       
 
         /* constuct 'circle' subset */
-        subset = makeSubset(dataset);
-
-        /* make output file */
-        //print_node_file(curr_nodes.substr(curr_nodes.find('/') + 1, curr_nodes.find_last_of('.') - curr_nodes.find('/')) + "output.txt", subset);
-        //print_edge_file(curr_edges.substr(curr_edges.find('/') + 1, curr_edges.find_last_of('.') - curr_edges.find('/')) + "output.txt", subset);
+        //subset = makeSubset(dataset);
 
         /* print to console */
         print(dataset);
-        std::cout << std::endl;
-        print(subset);
+
+        /* make output file */ 
+        PNG image = render(dataset, 500);
+        image.writeToFile("output.png");
 
         /* compare to input file */
         //compare_file("compare_node.txt", curr_nodes, curr_nodes.substr(curr_nodes.find('/') + 1, curr_nodes.find_last_of('_') - curr_nodes.find('.')) + "output.txt");
