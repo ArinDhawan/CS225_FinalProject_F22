@@ -1,5 +1,7 @@
 #include "BFS.h"
-#include "main.cpp"
+#include "../entry/main.cpp"
+
+
 
 std::vector<Node*> BFS(std::vector<Node*> dataset){
     /* init data */

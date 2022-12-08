@@ -271,7 +271,7 @@ int main() {
     std::vector<std::pair<std::string, std::string > > file_list;
 
     /* Load vector with test cases - Comment/Uncomment test cases to select them! */
-    file_list.push_back(std::make_pair("../datasets/supersmall_nodes.txt", "../datasets/supersmall_edges.txt"));
+    file_list.push_back(std::make_pair("../datasets/verysmall_nodes.txt", "../datasets/verysmall_edges.txt"));
     //file_list.push_back({"datasets/verysmall_nodes.txt", "datasets/verysmall_edges.txt"});
     //file_list.push_back({"datasets/small_nodes.txt", "datasets/small_edges.txt"});
     // file_list.push_back({"datasets/california_nodes.txt", "datasets/california_edges.txt"});
@@ -279,7 +279,7 @@ int main() {
 
     //TEST SUITE 2:
     /* Check User Inputs - TRUE = TEST ENABLE, FALSE = TEST DISABLED */
-    bool TEST_2 = false;
+    bool TEST_2 = true;
     if(TEST_2){
         std::cout << "TESTING USER INPUT SYSTEM" << std::endl;
         std::cout << "(Enter out of bounds values to test)" << std::endl;
