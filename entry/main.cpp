@@ -11,6 +11,7 @@
 
 #include "../src/Node.h"
 #include "../src/BFS.h"
+#include "../lib/cs225"
 
 
 /* Convert text files to a friendlier adjancency list */
@@ -331,7 +332,7 @@ bool compare_file(std::string file_name_out, std::string file_name_test, std::st
 }
 
 /* render given dataset as PNG of dim side_size by side_size */
-void render(std::vector<Node> dataset, unsigned side_size){
+PNG render(std::vector<Node> dataset, unsigned side_size){
     /* define coordinate transform function constants*/
     std::pair<unsigned, double> user = getUserInput();
     unsigned __CENTER_IDX = user.first;
@@ -345,6 +346,8 @@ void render(std::vector<Node> dataset, unsigned side_size){
 
     //y-scale factor such that (Cx, (Cy - 1) * Ky) --> (0, 1)
     double Ky = -1 * side_size / (2 * __RADIUS);
+
+    return PNG();
 }
 
 int main() {
