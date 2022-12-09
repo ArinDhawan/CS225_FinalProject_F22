@@ -203,14 +203,13 @@ std::vector<Node> makeSubset(std::vector<Node> dataset){
 }
 
 /* sortSet helper */
-unsigned getIdx(std::vector<Node>& arr, unsigned low, unsigned high){
-    Node pivot_node = arr[high];
-    unsigned i = low - 1;
+int getIdx(std::vector<Node>& arr, int low, int high){
+    int pivot_node_idx = arr[high]._idx;
+    int i = low - 1;
 
-    for(unsigned j = low; j <= high - 1; j++){
-        if(arr[j]._idx < pivot_node._idx){
-            i++;
-            std::swap(arr[i], arr[j]);
+    for(int j = low; j < high; j++){
+        if(arr[j]._idx < pivot_node_idx){
+            std::swap(arr[++i], arr[j]);
         }
     }
 
@@ -219,7 +218,7 @@ unsigned getIdx(std::vector<Node>& arr, unsigned low, unsigned high){
 }
 
 /* sortSet helper */
-void quickSort(std::vector<Node>& arr, unsigned low, unsigned high){
+void quickSort(std::vector<Node>& arr, int low, int high){
     if(low < high){
         unsigned idx = getIdx(arr, low, high);
         quickSort(arr, low, idx - 1);
