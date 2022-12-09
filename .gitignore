@@ -1,0 +1,8 @@
+# ignore main build files (Any file with .o extension)
+*.o
+
+#ignore main files
+main
+
+#Allow main.cpp
+!main.cpp
