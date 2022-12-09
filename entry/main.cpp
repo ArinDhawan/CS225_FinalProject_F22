@@ -10,8 +10,8 @@
 
 #include "../src/Node.h"
 #include "../src/BFS.h"
-#include "../lib/cs225/PNG.h"
-#include "../lib/cs225/HSLAPixel.h"
+#include "../lib/cs225/PNG.cpp"
+#include "../lib/cs225/HSLAPixel.cpp"
 
 using namespace cs225;
 
@@ -351,12 +351,36 @@ PNG render(std::vector<Node> dataset, unsigned side_size){
     PNG ret(side_size, side_size);
 
     /* parse dataset and load nodes to PNG */
-    unsigned pix_x, pix_y;
+    Node new_node;
+    unsigned pix_x, pix_y, end_pix_x;
+    double slope;
     for(auto node : dataset){
         /* color 3 by 3 pix square for each node */
         pix_x = std::floor((node._x - Cx) * Kx), pix_y = std::floor((node._y - Cy) * Ky);
         for(unsigned i = pix_x; i < pix_x + 3; i++){
             for(unsigned j = pix_y; j < pix_y + 3; j++){
+                /* turn curr_pix to black */
+                ret.getPixel(i, j).l = 0;
+            }
+        }
+
+        /* color edges */
+        for(auto edge : node._edges){
+            /* get new_node */
+            new_node = dataset[(node._idx == edge._start_node_idx) ? 
+                edge._end_node_idx : edge._start_node_idx];
+            
+            /* get slope */
+            slope = (new_node._y - node._y) / (new_node._x - node._x);
+
+            /* parse new linear equation */
+            pix_x = (node._x - Cx) * Kx, pix_y = (node._y - Cy) * Ky;
+            end_pix_x = (new_node._x - Cx) * Kx;
+            unsigned j;
+            for(unsigned i = pix_x; i < end_pix_x; i++){
+                /* calculate y_coordinate */
+                j = (unsigned)(std::floor(slope * (i - pix_x) + pix_y));
+
                 /* turn curr_pix to black */
                 ret.getPixel(i, j).l = 0;
             }
@@ -405,8 +429,6 @@ int main() {
         /* construct adj list from txt files */
         dataset = makeDataSet(curr_nodes, curr_edges);
         
-      
-
         /* constuct 'circle' subset */
         //subset = makeSubset(dataset);
 
