@@ -18,10 +18,10 @@ int main() {
 
     //TEST SUITE 1:
     /*Vector String Testcase Files*/
-    std::vector<std::pair<std::string, std::string > > file_list;
+    std::vector<std::pair<std::string, std::string>> file_list;
 
     // /* Load vector with test cases - Comment/Uncomment test cases to select them! */
-    file_list.push_back(std::make_pair("datasets/verysmall_nodes.txt", "datasets/verysmall_edges.txt"));
+    file_list.push_back(std::make_pair("../datasets/verysmall_nodes.txt", "../datasets/verysmall_edges.txt"));
     // //file_list.push_back({"datasets/verysmall_nodes.txt", "datasets/verysmall_edges.txt"});
     // //file_list.push_back({"datasets/small_nodes.txt", "datasets/small_edges.txt"});
     // // file_list.push_back({"datasets/california_nodes.txt", "datasets/california_edges.txt"});
@@ -39,7 +39,8 @@ int main() {
         /* construct adj list from txt files */
         dataset = makeDataSet(curr_nodes, curr_edges);
         
-      
+        /* print to console */
+        print(dataset);
 
         /* constuct 'circle' subset */
         subset = makeSubset(dataset);
@@ -49,8 +50,6 @@ int main() {
         //print_edge_file(curr_edges.substr(curr_edges.find('/') + 1, curr_edges.find_last_of('.') - curr_edges.find('/')) + "output.txt", subset);
 
         /* print to console */
-        print(dataset);
-        std::cout << std::endl;
         print(subset);
 
         /* compare to input file */

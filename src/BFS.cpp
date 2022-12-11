@@ -7,7 +7,10 @@ std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_
 
     /* open node file */
     node_list.open(file_name_node, std::ios_base::in);
-    if(!node_list.is_open()) return std::vector<Node>();
+    if(!node_list.is_open()){
+        std::cout << "FAIL\nfile : BFS.cpp ; line : " << __LINE__ << std::endl;
+        return std::vector<Node>();
+    } 
 
     /**
      * @brief load node vector from txt file
@@ -37,7 +40,10 @@ std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_
 
         /* open edge file */
         edge_list.open(file_name_edge, std::ios_base::in);
-        if(!edge_list.is_open()) return std::vector<Node>();
+        if(!edge_list.is_open()){
+            std::cout << "FAIL\nfile : BFS.cpp ; line : " << __LINE__ << std::endl;
+            return std::vector<Node>();
+        }
 
         /* init edge data */
         std::string str_edge;
