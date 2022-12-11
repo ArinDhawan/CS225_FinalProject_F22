@@ -208,7 +208,7 @@ int getIdx(std::vector<Node>& arr, int low, int high){
     int i = low - 1;
 
     for(int j = low; j < high; j++){
-        if(arr[j]._idx < pivot_node_idx){
+        if((int)arr[j]._idx < pivot_node_idx){
             std::swap(arr[++i], arr[j]);
         }
     }
@@ -425,7 +425,7 @@ int main() {
     std::vector<Node> dataset;  
 
     std::string curr_nodes, curr_edges;
-    for(int i = 0; i < file_list.size(); i++){
+    for(size_t i = 0; i < file_list.size(); i++){
         curr_nodes = file_list[i].first;
         curr_edges = file_list[i].second;
 
