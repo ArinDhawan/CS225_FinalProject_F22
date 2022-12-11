@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef DIJKSTRA_H
 #define DIJKSTRA_H
 
@@ -9,7 +11,6 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <pair>
 #include <queue>
 #include <unordered_set>
 #include <utility>

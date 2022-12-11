@@ -1,5 +1,4 @@
 #include "BFS.h"
-#include "../entry/main.cpp"
 
 std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_edge){
     std::ifstream node_list, edge_list;

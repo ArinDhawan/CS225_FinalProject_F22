@@ -1,9 +1,9 @@
+#pragma once
+
 #ifndef NODE_H
 #define NODE_H
 
 #include "Edge.h"
-
-#pragma once
 
 
 class Node {

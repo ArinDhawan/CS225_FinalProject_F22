@@ -1,11 +1,13 @@
+#pragma once
+
 #ifndef BFS_H
 #define BFS_H
 
 
-#include "Node.cpp"
-#include "Edge.cpp"
+#include "Node.h"
+#include "Edge.h"
 
-#pragma once
+
 
 std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_edge);
 std::vector<Node> makeSubset(std::vector<Node> dataset);

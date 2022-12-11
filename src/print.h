@@ -1,6 +1,11 @@
+#pragma once
+
+#ifndef PRINT_H
+#define PRINT_H
+
 #include "Node.h"
 
-#pragma once
+
 
 /* print dataset to terminal */
 void print(std::vector<Node> set);
@@ -17,3 +22,5 @@ void print_edge_file(std::string file_name, std::vector<Node> set);
 //TODO finish function
 /* return true if exact copies, print differences to output file */
 bool compare_file(std::string file_name_out, std::string file_name_test, std::string file_name_orig);
+
+#endif

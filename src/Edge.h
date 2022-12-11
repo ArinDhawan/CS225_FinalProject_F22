@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef EDGE_H
 #define EDGE_H
 
@@ -12,7 +14,6 @@
 #include <string>
 #include <cmath>
 
-#pragma once
 
 /* taken from main*/
 /* Edge Class */
