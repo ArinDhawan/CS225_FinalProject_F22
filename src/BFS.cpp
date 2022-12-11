@@ -1,4 +1,5 @@
 #include "BFS.h"
+#include "sort.h"
 
 std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_edge){
     std::ifstream node_list, edge_list;
@@ -150,6 +151,8 @@ std::vector<Node> makeSubset(std::vector<Node> dataset){
             }
         }
     }
+    /* sort subset */
+    sortSet(ret);
 
     /* return */
     return ret;

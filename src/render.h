@@ -4,7 +4,7 @@
 #define RENDER_H
 
 #include "Node.h"
-#include "../lib/cs225/PNG.cpp"
+#include "../lib/cs225/PNG.h"
 
 
 

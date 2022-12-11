@@ -2,7 +2,6 @@
 #define DIJKSTRA_H
 
 #include "Node.h"
-#include "Edge.h"
 
 #include <climits>
 #include <iostream>

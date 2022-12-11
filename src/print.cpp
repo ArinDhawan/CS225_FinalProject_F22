@@ -1,5 +1,5 @@
 #include "print.h"
-#include "sort.cpp"
+#include "sort.h"
 
 /* print dataset to terminal */
 void print(std::vector<Node> set){
