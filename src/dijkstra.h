@@ -26,10 +26,10 @@ class Dijkstra {
         Dijkstra(vector<Node> dataset, unsigned start_index);
 
         ~Dijkstra();
+        void solve();
 
 
     private:
-        void solve();
         void add_node_to_visited(unsigned node_index);
         unsigned get_node_idx(unsigned node_index);
 
@@ -50,7 +50,7 @@ class Dijkstra {
         // edges we can currently traverse
         vector<bool> nodes_visited_;   // keeping track of all the nodes we've been to (as a base)
         vector<Edge> edges_;           // when we add a node to the 'visited' list, we add all its edges
-        vector<unsigned> distances_;
+        vector<double> distances_;
 
         // this is the USER INPUT. we need to handle actual vector index here
         unsigned start_;
