@@ -66,7 +66,7 @@ std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_
 
             /* if edge TO target -. load edge */
             if(end_node_idx == node_idx){
-                edges.push_back(Edge(edge_idx, start_node_idx, end_node_idx, weight));
+                edges.push_back(Edge(edge_idx, end_node_idx, start_node_idx, weight));
 
                 /* mark */
                 // std::cout << "Line : " << __LINE__ << std::endl;
