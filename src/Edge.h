@@ -19,6 +19,8 @@
 /* Edge Class */
 class Edge {
     public:
+        Edge();
+
         Edge(unsigned idx, unsigned start_node_idx, unsigned end_node_idx, double weight); // Assignment
 
         Edge(const Edge & other); // Copy

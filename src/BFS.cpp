@@ -2,8 +2,15 @@
 #include "sort.h"
 
 std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_edge){
-    std::ifstream node_list, edge_list;
-    std::vector<Edge> edges;
+    std::vector<Node> nodeSet = makeNodeSet(file_name_node);
+    std::vector<Edge> edgeSet = makeEdgeSet(file_name_edge);
+    std::vector<Node> ret = makeAdjSet(nodeSet, edgeSet);
+
+    return ret;
+}
+
+std::vector<Node> makeNodeSet(std::string file_name_node){
+    std::ifstream node_list;
     std::vector<Node> ret;
 
     /* open node file */
@@ -12,15 +19,6 @@ std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_
         std::cout << "FAIL\nfile : BFS.cpp ; line : " << __LINE__ << std::endl;
         return std::vector<Node>();
     } 
-
-    /**
-     * @brief load node vector from txt file
-     * 1. grab node data with getline()
-     * 2. get edge vector SEE NEXT @brief
-     * 3. construct linked-list from edge vector
-     * 4. load head of list into node obj with node data
-     * 5. repeat per node
-     */
 
     /* parse node file */
     while(!node_list.eof()){
@@ -36,15 +34,32 @@ std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_
         s >> node_idx >> latitude >> longitude;
 
         /* mark */
-        //std::cout << "Line : " << __LINE__ << std::endl;
-        //std::cout << "node_idx : " << node_idx << std::endl;
+        std::cout << "Line : " << __LINE__ << std::endl;
+        std::cout << "node_idx : " << node_idx << std::endl;
 
-        /* open edge file */
-        edge_list.open(file_name_edge, std::ios_base::in);
-        if(!edge_list.is_open()){
-            std::cout << "FAIL\nfile : BFS.cpp ; line : " << __LINE__ << std::endl;
-            return std::vector<Node>();
-        }
+        /* construct Node, push to ret */
+        ret.push_back(Node(node_idx, latitude, longitude, std::vector<Edge>()));
+    }
+    /* close node file */
+    node_list.close();
+
+    /* return */
+    return ret;
+}
+
+std::vector<Edge> makeEdgeSet(std::string file_name_edge){
+    std::ifstream edge_list;
+    std::vector<Edge> ret;
+
+    /* open edge file */
+    edge_list.open(file_name_edge, std::ios_base::in);
+    if(!edge_list.is_open()){
+        std::cout << "FAIL\nfile : BFS.cpp ; line : " << __LINE__ << std::endl;
+        return std::vector<Edge>();
+    } 
+
+    /* parse edge file */
+    while(!edge_list.eof()){
 
         /* init edge data */
         std::string str_edge;
@@ -52,61 +67,39 @@ std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_
         unsigned start_node_idx, end_node_idx;
         double weight;
 
-        /** 
-         * @brief load edges vector from txt file 
-         * pt1 : grab edges pointing TO target node
-         * pt2 : grab edges pointing FROM target node
-         */
+        /* grab edge data */
+        getline(edge_list, str_edge);
+        std::stringstream s(str_edge);
+        s >> edge_idx >> start_node_idx >> end_node_idx >> weight;
 
-        /* parse edge file pt1 */
-        do{
-            /* grab edge data */
-            std::getline(edge_list, str_edge);
-            std::stringstream s(str_edge);
-            s >> edge_idx >> start_node_idx >> end_node_idx >> weight;
+        /* mark */
+        std::cout << "Line : " << __LINE__ << std::endl;
+        std::cout << "edge_idx : " << edge_idx << std::endl;
 
-            /* if edge TO target -. load edge */
-            if(end_node_idx == node_idx){
-                edges.push_back(Edge(edge_idx, end_node_idx, start_node_idx, weight));
-
-                /* mark */
-                // std::cout << "Line : " << __LINE__ << std::endl;
-                // std::cout << "node_idxes : " << end_node_idx << ", " << start_node_idx << std::endl;
-            }
-
-        }while(!edge_list.eof() && start_node_idx < node_idx);
-
-        /* parse edge file pt2 */
-        while(start_node_idx == node_idx){
-
-            /* construct Edge */
-            edges.push_back(Edge(edge_idx, start_node_idx, end_node_idx, weight));
-
-            /* mark */
-            // std::cout << "Line : " << __LINE__ << std::endl;
-            // std::cout << "node_idxes : " << start_node_idx << ", " << end_node_idx << std::endl;
-
-            /* file break */
-            if(edge_list.eof()) break;
-
-            /* grab edge data */
-            getline(edge_list, str_edge);
-            std::stringstream s(str_edge);
-            s >> edge_idx >> start_node_idx >> end_node_idx >> weight;
-        }
-        /* close edge file */
-        edge_list.close();
-
-        /* construct Node, push to ret */
-        ret.push_back(Node(node_idx, latitude, longitude, edges)); //TODO: MEM LEAK HERE
-
-        /* delete edges vector */
-        edges.clear();
+        /* construct Edge */
+        ret.push_back(Edge(edge_idx, start_node_idx, end_node_idx, weight));
     }
     /* close node file */
-    node_list.close();
+    edge_list.close();
 
     /* return */
+    return ret;
+}
+
+std::vector<Node> makeAdjSet(std::vector<Node> nodeSet, std::vector<Edge> edgeSet){
+    /* copy nodeSet to ret */
+    std::vector<Node> ret = nodeSet;
+    unsigned first, second;
+
+    /* parse edgeSet */
+    for(auto edge : edgeSet){
+        first = std::min(edge._start_node_idx, edge._end_node_idx);
+        second = std::max(edge._start_node_idx, edge._end_node_idx);
+        
+        ret[first]._edges.push_back(Edge(edge._idx, first, second, edge._weight));
+        ret[second]._edges.push_back(Edge(edge._idx, second, first, edge._weight));
+    }
+
     return ret;
 }
 

@@ -4,7 +4,7 @@
 /* print dataset to terminal */
 void print(std::vector<Node> set){
     std::vector<Node> copy = set;
-    sortSet(copy);
+    //sortSet(copy);
     for(auto node : copy){
         std::cout << node._idx << " : " << node._x << ", " << node._y << std::endl;
 
@@ -17,7 +17,7 @@ void print(std::vector<Node> set){
 /* print function but to output file */
 void print_to_file(std::string file_name, std::vector<Node> set){
     std::vector<Node> copy = set;
-    sortSet(copy);
+    //sortSet(copy);
 
     std::ofstream output(file_name);
     if(!output.is_open()) return;
@@ -37,7 +37,7 @@ void print_to_file(std::string file_name, std::vector<Node> set){
 /* print dataset in CSV format */
 void print_node_file(std::string file_name, std::vector<Node> set){
     std::vector<Node> copy = set;
-    sortSet(copy);
+    //sortSet(copy);
     
     std::ofstream output(file_name);
     if(!output.is_open()) return;
@@ -51,7 +51,7 @@ void print_node_file(std::string file_name, std::vector<Node> set){
 /* print dataset in CSV format */
 void print_edge_file(std::string file_name, std::vector<Node> set){
     std::vector<Node> copy = set;
-    sortSet(copy);
+    //sortSet(copy);
 
     std::ofstream output(file_name);
     if(!output.is_open()) return;
