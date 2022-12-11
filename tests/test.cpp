@@ -10,19 +10,20 @@
 #include <vector>
 #include <iostream>
 #include <exception>
+#include <catch2/catch_test_macros.hpp>
 
-// long sumVector(std::vector<int> arr) {
-//     long acc = 0;
-//     for(size_t i = 0; i < arr.size(); i++) {
-//         acc += arr.at(i);
-//     }
-//     return acc;
-// }
+long sumVector(std::vector<int> arr) {
+    long acc = 0;
+    for(size_t i = 0; i < arr.size(); i++) {
+        acc += arr.at(i);
+    }
+    return acc;
+}
 
-// TEST_CASE("Catch2 & Tests are wroking", "[Catch2]"){
-//     std::vector<int> vec = {1, 2, 3};
-//     REQUIRE(sumVector(vec) == 6);
-// }
+TEST_CASE("Catch2 & Tests are wroking", "[Catch2]"){
+    std::vector<int> vec = {1, 2, 3};
+    REQUIRE(sumVector(vec) == 6);
+}
 
 // Quickstart commands
 // g++ tests/test.cpp
