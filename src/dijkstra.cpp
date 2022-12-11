@@ -155,6 +155,14 @@ void Dijkstra::print_path_file(){
 
     }
 
+    vector<unsigned> p = path_start_to_end(7);
+
+    // print the path from the desired node
+    for (unsigned i = 0; i < p.size(); i++) {
+        output << p[i] << "  ";
+    }
+
+
     output.close();
 }
 
@@ -172,4 +180,24 @@ double Dijkstra::get_distance_at_node(unsigned index) {
     unsigned idx = get_node_idx(index);
     
     return distances_[idx];
+}
+
+
+// TODO function that returns a path vector given some end node (0th index is start, last index is end) TAKES IN THE ORIGINAL INDEX FROM THE DATASET
+// This back-tracks from the end. Goes through the path vector starting at the end, then iterate to the 'previous' node (path.second)
+vector<unsigned> Dijkstra::path_start_to_end(unsigned end_node_index) {
+
+    vector<unsigned> path_to_end;
+    unsigned curr_index = get_node_idx(end_node_index);
+
+    while (path[curr_index].first != start_) {
+        path_to_end.push_back(path[curr_index].first);          // path[i].first is the 'current node', which the path follows
+
+        curr_index = get_node_idx(path[curr_index].second);     // path[i].second is the 'previous node', which we want to go to next
+    }
+    path_to_end.push_back(path[curr_index].first);
+
+    reverse(path_to_end.begin(), path_to_end.end());
+
+    return path_to_end;
 }

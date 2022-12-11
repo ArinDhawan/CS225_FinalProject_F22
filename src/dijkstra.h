@@ -14,6 +14,7 @@
 #include <utility>
 #include <string>
 #include <cmath>
+#include <algorithm>
 
 using namespace std;
 
@@ -35,6 +36,9 @@ class Dijkstra {
 
         // returns the distance of this node from the start point. TAKES IN THE ORIGINAL INDEX FROM THE DATASET
         double get_distance_at_node(unsigned index);
+
+        // given some end index, return the path to take from the start to the end. TAKES IN THE ORIGINAL INDEX FROM THE DATASET
+        vector<unsigned> path_start_to_end(unsigned end_node_index);
 
 
     private:
