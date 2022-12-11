@@ -1,11 +1,10 @@
-#pragma once
-
 #ifndef DIJKSTRA_H
 #define DIJKSTRA_H
 
 #include "Node.h"
 #include "Edge.h"
 
+#include <climits>
 #include <iostream>
 #include <istream>
 #include <fstream>
