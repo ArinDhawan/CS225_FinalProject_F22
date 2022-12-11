@@ -41,15 +41,16 @@
 
 # **Code Execution** 
 
-*A guide on running the code in this repository.*
+*A guide on running the code in this repository. **Ensure you clone the repository into the same docker container as used with the CS 225 labs and mps.***
 
-1. Ensure you use the CS 225 docker enviorment
-2. 
-3. 
-4. 
-5. 
-
-### **`TODO TODO TODO TODO`**  
+1. Clone the repository: `git clone github.com/ArinDhawan/CS225_FinalProject_F22`
+2. Nagivate into the repository: `cd CS225_FinalProject_F22` *(Or whatever you named it)*
+2. Create a build folder: `mkdir build` *(Make sure you are in the root of the respository!)*
+3. Navigate into the build folder: `cd build`
+4. Run: `cmake ..` *(Only do this once!)*
+5. Run: `make`
+6. Run `./main`
+7. Repeat steps `5` and `6` every time you make changes. *(Ensure you're still in /build)*
 
 <div id='tests'/>
 
@@ -58,10 +59,6 @@
 
 *A quickstart guide on running test cases with the included test suite*
 
-`g++ tests/test.cpp`
-
-`./a.out`
-
-
-### **`TODO TODO TODO TODO`**
-
+1. Complete all the steps in "Code Execution"
+2. Run: `make test`
+3. Run: `./test`
