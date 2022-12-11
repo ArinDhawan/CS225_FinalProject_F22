@@ -5,7 +5,6 @@ std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_
     std::ifstream node_list, edge_list;
     std::vector<Edge> edges;
     std::vector<Node> ret;
-    Edge * edge_list_head;
 
     /* open node file */
     node_list.open(file_name_node, std::ios_base::in);
@@ -62,7 +61,7 @@ std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_
 
             /* if edge TO target -. load edge */
             if(end_node_idx == node_idx){
-                edges.push_back(Edge(edge_idx, start_node_idx, end_node_idx, weight, NULL));
+                edges.push_back(Edge(edge_idx, start_node_idx, end_node_idx, weight));
 
                 /* mark */
                 // std::cout << "Line : " << __LINE__ << std::endl;
@@ -75,7 +74,7 @@ std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_
         while(start_node_idx == node_idx){
 
             /* construct Edge */
-            edges.push_back(Edge(edge_idx, start_node_idx, end_node_idx, weight, NULL));
+            edges.push_back(Edge(edge_idx, start_node_idx, end_node_idx, weight));
 
             /* mark */
             // std::cout << "Line : " << __LINE__ << std::endl;

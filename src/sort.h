@@ -1,5 +1,7 @@
 #include "Node.h"
 
+#pragma once
+
 /* sortSet helper */
 int getIdx(std::vector<Node>& arr, int low, int high);
 

@@ -2,6 +2,7 @@
 #define NODE_H
 
 #include "Edge.h"
+
 #pragma once
 
 
