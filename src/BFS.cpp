@@ -111,6 +111,12 @@ std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_
 }
 
 std::vector<Node> makeSubset(std::vector<Node> dataset){
+    /* null check */
+    if(dataset.empty()){
+        std::cout << "FAIL\nfile : BFS.cpp ; line : " << __LINE__ << std::endl;
+        return std::vector<Node>();
+    }
+
     /* init data */
     std::queue<Node> queue;
     std::vector<Node> ret;
