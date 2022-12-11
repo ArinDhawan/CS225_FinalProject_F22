@@ -1,5 +1,7 @@
 #include "Node.h"
 
+#pragma once
+
 /* print dataset to terminal */
 void print(std::vector<Node> set);
 

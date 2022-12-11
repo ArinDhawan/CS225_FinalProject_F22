@@ -1,6 +1,6 @@
 #include "Edge.h"
 
- Edge::Edge(unsigned idx, unsigned start_node_idx, unsigned end_node_idx, double weight, Edge * next){
+ Edge::Edge(unsigned idx, unsigned start_node_idx, unsigned end_node_idx, double weight){
   _idx = idx;
   _start_node_idx = start_node_idx;
   _end_node_idx = end_node_idx;

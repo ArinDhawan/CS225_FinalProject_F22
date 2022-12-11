@@ -1,8 +1,6 @@
 #ifndef EDGE_H
 #define EDGE_H
 
-
-
 #include <iostream>
 #include <istream>
 #include <fstream>
@@ -20,7 +18,7 @@
 /* Edge Class */
 class Edge {
     public:
-        Edge(unsigned idx, unsigned start_node_idx, unsigned end_node_idx, double weight, Edge * next); // Assignment
+        Edge(unsigned idx, unsigned start_node_idx, unsigned end_node_idx, double weight); // Assignment
 
         Edge(const Edge & other); // Copy
 
