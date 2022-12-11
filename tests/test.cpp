@@ -3,7 +3,7 @@
 #include "../src/dijkstra.h"
 
 #define CATCH_CONFIG_MAIN
-#include "catch.hpp"
+
 
 //!DEMO START
 
