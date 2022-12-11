@@ -18,14 +18,14 @@ Dijkstra::Dijkstra(vector<Node> dataset, unsigned start_index) {
 
         pair<unsigned, unsigned> p;
         p.first = dataset[i]._idx;
-        p.second = -1;
+        p.second = 0;
 
 
         path.push_back(p);  // insert all nodes, and make their 'previus' node invalid
         
     }
     // initialize distances to max and visited as false
-    distances_     = vector<unsigned>(dataset.size(), UINT_MAX);
+    distances_     = vector<double>(dataset.size(), UINT_MAX);
     nodes_visited_ = vector<bool>(dataset.size(), false);
 
     dataset_ = dataset; // copy over the dataset
@@ -46,6 +46,7 @@ void Dijkstra::solve() {
     // continue until every edge has been visited
     // once an edge is visited, erase it using edges_.erase (edges_.begin()+index);
     while (edges_.size() != 0) {
+        cout << "got here" << endl;
 
         // find the smallest edge...O(n) runtime...not the best
         unsigned shortest_dist = UINT_MAX;  // vals will always be smaller
@@ -79,8 +80,9 @@ void Dijkstra::solve() {
             path[end_node_idx].second = start_node_idx;
 
             // remove that edge from the edges_ list
-            edges_.erase (edges_.begin() + shortest_idx);
         }
+        
+        edges_.erase (edges_.begin() + shortest_idx);
 
 
     }
@@ -120,8 +122,8 @@ unsigned Dijkstra::get_node_idx(unsigned node_index) {
 
 void Dijkstra::print_path() {
     for (unsigned i = 0; i < path.size(); i++) {
-        cout << "Start Node: " << path[i].first  << endl;
-        cout << "Start Node: " << path[i].second << endl;
+        cout << "Node      : " << path[i].first  << endl;
+        cout << "Previous  : " << path[i].second << endl;
         cout << "Distance  : " << distances_[i]  << endl;
         cout << "----------------------" << endl;
     }
