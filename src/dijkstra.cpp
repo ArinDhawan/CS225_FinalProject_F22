@@ -120,7 +120,7 @@ unsigned Dijkstra::get_node_idx(unsigned node_index) {
         }
     }
 
-    return node_index;
+    return -1;
 }
 
 
@@ -131,4 +131,27 @@ void Dijkstra::print_path() {
         cout << "Distance  : " << distances_[i]  << endl;
         cout << "----------------------" << endl;
     }
+
+    print_path_file();
+}
+
+/* print dataset in CSV format */
+void Dijkstra::print_path_file(){
+    string file_name = "output3.txt";
+
+    std::ofstream output(file_name);
+    if(!output.is_open()) return;
+
+    for (unsigned i = 0; i < path.size(); i++) {
+
+        if (distances_[i] != UINT_MAX) {
+            output << "Node      : " << path[i].first  << endl;
+            output << "Previous  : " << path[i].second << endl;
+            output << "Distance  : " << distances_[i]  << endl;
+            output << "----------------------" << endl;
+        }
+
+    }
+
+    output.close();
 }

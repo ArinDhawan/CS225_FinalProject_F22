@@ -33,6 +33,7 @@ class Dijkstra {
         unsigned get_node_idx(unsigned node_index);
 
         void print_path();
+        void print_path_file();
 
 
         vector<Node> dataset_;
