@@ -111,6 +111,7 @@ void Dijkstra::add_node_to_visited(unsigned node_index) {
 
 }
 
+// takes in the node number (original index from the dataset), and outputs the index inside our subset
 unsigned Dijkstra::get_node_idx(unsigned node_index) {
 
 
@@ -137,6 +138,7 @@ void Dijkstra::print_path() {
 
 /* print dataset in CSV format */
 void Dijkstra::print_path_file(){
+
     string file_name = "output3.txt";
 
     std::ofstream output(file_name);
@@ -154,4 +156,20 @@ void Dijkstra::print_path_file(){
     }
 
     output.close();
+}
+
+
+
+// returns the pair<node, prev_node> from our path vector. TAKES IN THE ORIGINAL INDEX FROM THE DATASET
+pair<unsigned, unsigned> Dijkstra::get_pair_at_node(unsigned index) {
+    unsigned idx = get_node_idx(index);
+
+    return path[idx];
+}
+
+// returns the distance of this node from the start point. TAKES IN THE ORIGINAL INDEX FROM THE DATASET
+double Dijkstra::get_distance_at_node(unsigned index) {
+    unsigned idx = get_node_idx(index);
+    
+    return distances_[idx];
 }

@@ -27,10 +27,18 @@ class Dijkstra {
         ~Dijkstra();
         void solve();
 
+        // takes in the node number (original index from the dataset), and outputs the index inside our subset
+        unsigned get_node_idx(unsigned node_index);
+
+        // returns the pair<node, prev_node> from our path vector. TAKES IN THE ORIGINAL INDEX FROM THE DATASET
+        pair<unsigned, unsigned> get_pair_at_node(unsigned index);
+
+        // returns the distance of this node from the start point. TAKES IN THE ORIGINAL INDEX FROM THE DATASET
+        double get_distance_at_node(unsigned index);
+
 
     private:
         void add_node_to_visited(unsigned node_index);
-        unsigned get_node_idx(unsigned node_index);
 
         void print_path();
         void print_path_file();
