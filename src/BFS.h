@@ -5,9 +5,8 @@
 #include "Node.cpp"
 #include "Edge.cpp"
 
-class BFS {
-    public: 
-        std::vector<Node> makeSubset(std::vector<Node> dataset);
-};
+std::vector<Node> makeDataSet(std::string file_name_node, std::string file_name_edge);
+std::vector<Node> makeSubset(std::vector<Node> dataset);
+std::pair<unsigned, double> getUserInput();
 
 #endif
