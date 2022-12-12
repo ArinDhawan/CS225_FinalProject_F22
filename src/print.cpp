@@ -1,11 +1,7 @@
 #include "print.h"
 #include "sort.h"
 
-/*
-    Print a dataset to terminal.
-    INPUT: vector node with edges dataset
-    OUTPUT: void (Prints to terminal)
-*/
+/* Print a dataset to terminal */
 void print(std::vector<Node> set){
 
     //Copy the dataset
@@ -26,11 +22,7 @@ void print(std::vector<Node> set){
     }
 }
 
-/*
-    Print a dataset to a text file
-    INPUT: file location to print, vector node with edges dataset
-    OUTPUT: void (Prints to text file)
-*/
+/* Print a dataset to a text file */
 void print_to_file(std::string file_name, std::vector<Node> set){
 
     //Copy datasets
