@@ -5,7 +5,6 @@
 
 #include "Node.h"
 
-
 /* 
     Finds the pivot point and swaps nodes.
     INPUTS: node vector dataset, start index, end index
