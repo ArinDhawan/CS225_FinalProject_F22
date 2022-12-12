@@ -14,23 +14,31 @@
 #include <string>
 #include <cmath>
 
-
-/* taken from main*/
-/* Edge Class */
+/*
+    Edge class used to represent connections between nodes.
+    PUBLIC VARIABLEs:
+        _idx: Index of edge
+        _start_node_idx: Starting node of edge
+        _end_node_idx: Ending node of edge
+*/
 class Edge {
     public:
+
+        //Default constructor
         Edge();
 
+        //Overloaded constructor
         Edge(unsigned idx, unsigned start_node_idx, unsigned end_node_idx, double weight); // Assignment
 
-        Edge(const Edge & other); // Copy
+        //Copy constructor
+        Edge(const Edge & other);
 
-        ~Edge(); // Destructor
+        //Destructor
+        ~Edge();
 
         unsigned _idx;
         unsigned _start_node_idx, _end_node_idx;
         double _weight;
 };
-
 
 #endif
