@@ -48,6 +48,7 @@ std::vector<Node> makeNodeSet(std::string file_name_node){
         std::cout << "Line : " << __LINE__ << std::endl;
         std::cout << "node_idx : " << node_idx << std::endl;
 
+
         //Create and push new node to return vector
         ret.push_back(Node(node_idx, latitude, longitude, std::vector<Edge>()));
     }
@@ -91,6 +92,7 @@ std::vector<Edge> makeEdgeSet(std::string file_name_edge){
         //Print out node data
         std::cout << "Line : " << __LINE__ << std::endl;
         std::cout << "edge_idx : " << edge_idx << std::endl;
+
 
         //Create and push new node to return vector
         ret.push_back(Edge(edge_idx, start_node_idx, end_node_idx, weight));
