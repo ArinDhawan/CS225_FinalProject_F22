@@ -1,63 +1,104 @@
 #include "print.h"
 #include "sort.h"
 
-/* print dataset to terminal */
+/*
+    Print a dataset to terminal.
+    INPUT: vector node with edges dataset
+    OUTPUT: void (Prints to terminal)
+*/
 void print(std::vector<Node> set){
+
+    //Copy the dataset
     std::vector<Node> copy = set;
-    //sortSet(copy);
+
+    //Loop through nodes in datasets && print to terminal
     for(auto node : copy){
+
+        //Print: NODE_INDEX : X : Y
         std::cout << node._idx << " : " << node._x << ", " << node._y << std::endl;
 
+        //Parse connected edges && print edges to terminal
         for(auto edge : node._edges){
+
+            //Print: START_INDEX, END_INDEX
             std::cout << edge._start_node_idx << ", " << edge._end_node_idx << std::endl;
         }
     }
 }
 
-/* print function but to output file */
+/*
+    Print a dataset to a text file
+    INPUT: file location to print, vector node with edges dataset
+    OUTPUT: void (Prints to text file)
+*/
 void print_to_file(std::string file_name, std::vector<Node> set){
-    std::vector<Node> copy = set;
-    //sortSet(copy);
 
+    //Copy datasets
+    std::vector<Node> copy = set;
+
+    //Open output stream to print to file
     std::ofstream output(file_name);
+
+    //Check if file failed to open
     if(!output.is_open()) return;
     
+    //Parse nodes in dataset
     for(auto node : copy){
+
+        //Print: NODE_INDEX : X, Y
         output << node._idx << " : " << node._x << ", " << node._y << std::endl;
 
+        //Parse edges connected to node
         for(auto edge : node._edges){
-            output  << edge._start_node_idx << ", "
-                << edge._end_node_idx
-                << std::endl;
+
+            //Print: START_INDEX, END INDEX
+            output  << edge._start_node_idx << ", " << edge._end_node_idx << std::endl;
         }
     }
+    //Close file
     output.close();
 }
 
-/* print dataset in CSV format */
+/* Print node dataset in CSV format to a text file */
 void print_node_file(std::string file_name, std::vector<Node> set){
+
+    //Copy dataset
     std::vector<Node> copy = set;
-    //sortSet(copy);
-    
+
+    //Open output stream to print to file
     std::ofstream output(file_name);
+
+    //Check if file failed to open
     if(!output.is_open()) return;
     
+    //Parse nodes in dataset
     for(auto node : copy){
+        //Print: NODE_INDEX : X, Y
         output << node._idx << " " << node._x << " " << node._y << std::endl;
     }
+    //Close file
     output.close();
 }
 
-/* print dataset in CSV format */
+/* Print edges dataset in CSV format to a text file */
 void print_edge_file(std::string file_name, std::vector<Node> set){
-    std::vector<Node> copy = set;
-    //sortSet(copy);
 
+    //Copy dataset
+    std::vector<Node> copy = set;
+
+    //Open output stream to print to file
     std::ofstream output(file_name);
+
+    //Check if file failed to open
     if(!output.is_open()) return;
 
+    //Parse nodes in dataset
     for(auto node : copy){
+
+        //Parse edges connected to node
         for(auto edge : node._edges){
+
+            //Print edge to file
             output << edge._idx << " "
                 << edge._start_node_idx << " "
                 << edge._end_node_idx << " "
@@ -65,40 +106,6 @@ void print_edge_file(std::string file_name, std::vector<Node> set){
                 << std::endl;
         }
     }
+    //Close file
     output.close();
-}
-
-//TODO finish function
-/* return true if exact copies, print differences to output file */
-bool compare_file(std::string file_name_out, std::string file_name_test, std::string file_name_orig){
-    bool ret = false;
-
-    std::ofstream output(file_name_out);
-    if(!output.is_open()) return false;
-
-    std::ifstream input_test(file_name_test), input_orig(file_name_orig);
-    if(!input_test.is_open() || !input_orig.is_open()) return false;
-
-    /* check */
-    std::string str_test, str_orig;
-    double temp_test, temp_orig;
-    while(!input_test.eof() && !input_orig.eof()){
-        std::getline(input_test, str_test);
-        std::getline(input_orig, str_orig);
-        std::stringstream s_t(str_test), s_o(str_orig);
-
-        while(temp_test != '\n' && temp_orig != '\n'){
-            s_t >> temp_test;
-            s_o >> temp_orig;
-
-            if(temp_test != temp_orig){
-                output << str_test << str_orig << std::endl;
-            }
-        }
-    }
-    input_test.close();
-    input_orig.close();
-    output.close();
-
-    return ret;
 }
