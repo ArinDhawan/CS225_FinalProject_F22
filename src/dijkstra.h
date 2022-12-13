@@ -15,6 +15,8 @@
 #include <string>
 #include <cmath>
 #include <algorithm>
+#include <cmath>
+#include <float.h>
 
 using namespace std;
 
@@ -22,7 +24,6 @@ class Dijkstra {
     public:
         Dijkstra();
 
-        //!add endpiont
         Dijkstra(vector<Node> dataset, unsigned start_index);
 
         ~Dijkstra();
@@ -40,6 +41,8 @@ class Dijkstra {
         // given some end index, return the path to take from the start to the end. TAKES IN THE ORIGINAL INDEX FROM THE DATASET
         vector<unsigned> path_start_to_end(unsigned end_node_index);
 
+        // returns the path whos distance is closest to the target distance
+        vector<unsigned> path_target_distance(double target_distance);
 
     private:
         void add_node_to_visited(unsigned node_index);

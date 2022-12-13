@@ -54,6 +54,17 @@
 
 <div id='tests'/>
 
+# **Changing datasets within Main** 
+
+
+*A quickstart guide on changing datasets*
+
+1. Complete all the steps in the Code Excecution till step 4 navigate into the build folder: `cd build`
+2. In out main function to switch between databases, we have provided commented lines to switch between databases. 
+(Note: For the smaller database, keep in mind the selected radius and destination)
+2. Run: `make`
+3. Run: `./main`
+
 # **Test Suite** 
 
 

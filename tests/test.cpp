@@ -89,7 +89,7 @@ TEST_CASE("DatasetVerySmall", "[Test2]") {
 
         //TODO: Testing RenderPNG : 
         /* render PNG */
-        //render(subset, d.path_start_to_end(50), 1000, 5).writeToFile("out.png");
+        render(dataset, d.path_start_to_end(6), 1000, 1).writeToFile("out1.png");
 
     }
 }
@@ -118,10 +118,13 @@ TEST_CASE("DatasetSmall", "[Test3]") {
              y++;
         }
 
+        /* call dijkstra */
+        Dijkstra d(dataset, 0);
+
 
         //TODO: Testing RenderPNG : 
         /* render PNG */
-        //render(subset, d.path_start_to_end(50), 1000, 5).writeToFile("out.png");
+        render(dataset, d.path_start_to_end(50), 1000, 5).writeToFile("out2.png");
     }
 }
 
@@ -150,10 +153,12 @@ TEST_CASE("SanFrancisco", "[Test4]") {
              y++;
         }
 
+        /* call dijkstra */
+        Dijkstra d(dataset, 0);
 
         //TODO: Testing RenderPNG : 
         /* render PNG */
-        //render(subset, d.path_start_to_end(50), 1000, 5).writeToFile("out.png");
+        render(dataset, d.path_start_to_end(50), 1000, 5).writeToFile("out3.png");
     }
 }
 
@@ -183,10 +188,12 @@ TEST_CASE("California", "[Test5]") {
              y++;
         }
 
+        /* call dijkstra */
+        Dijkstra d(dataset, 0);
 
         //TODO: Testing RenderPNG : 
         /* render PNG */
-        //render(subset, d.path_start_to_end(50), 1000, 5).writeToFile("out.png");
+        render(dataset, d.path_start_to_end(50), 1000, 5).writeToFile("out4.png");
     }
 }
 

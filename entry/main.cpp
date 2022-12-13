@@ -16,15 +16,19 @@
 #include "dijkstra.h"
 
 int main() {
-    //TEST SUITE 1:
+    //PRE-MADE INSTRUCTIONS FOR MAIN:
     /*Vector String Testcase Files*/
     std::vector<std::pair<std::string, std::string>> file_list;
 
-    /* Load vector with test cases - Comment/Uncomment test cases to select them! */
-    //file_list.push_back(std::make_pair("../datasets/verysmall_nodes.txt", "../datasets/verysmall_edges.txt"));
-    //file_list.push_back({"../datasets/small_nodes.txt", "../datasets/small_edges.txt"});
-    file_list.push_back({"../datasets/california_nodes.txt", "../datasets/california_edges.txt"});
-    //file_list.push_back({"../datasets/san_francisco_nodes.txt", "../datasets/san_francisco_edges.txt"});
+    /* Load vector with custom database*/
+    std::string x;
+    std::cout << "Enter node file path:"; 
+    std::cin >> x;
+
+    std::string y;
+    std::cout << "Enter edge file path:";
+    std::cin >> y;
+    file_list.push_back({x,y});
 
     /*Declare vars*/
     std::vector<Node> subset;  
