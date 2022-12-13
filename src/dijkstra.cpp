@@ -5,7 +5,11 @@ Dijkstra::Dijkstra() {
     // default
 }
 
-// takes in an ordered vector of nodes
+/* Dijkstra(vector<Node> dataset, unsigned start_index)
+*   Default constructor for the Dijkstra object
+*   Takes in a dataset of Nodes, and a starting index
+*   initializes all the vectors (as blank/0) and sets the desired starting node
+*/
 Dijkstra::Dijkstra(vector<Node> dataset, unsigned start_index) {
     // initialize distances to some impossible distance (-1)
 
@@ -39,10 +43,19 @@ Dijkstra::Dijkstra(vector<Node> dataset, unsigned start_index) {
 
 }
 
-Dijkstra::~Dijkstra() {
 
-}
-
+/* solve()
+*   The main function of this algorithm.
+*
+*   Steps:
+*   1. Mark current node as visited
+*   2. Add all the edges from the current node to the edges_
+*   3. Find the shortest edge from the edges_ vector
+*   4. Follow the shortest edge and update the current node
+*   5. If the distance from the previous node is shorter than that node’s current distance, then update it’s current distance. Also update it’s “previous” part 
+*      in the ‘path’ vector
+*   6. Repeat steps 1-4 until all edges have been visited
+*/
 void Dijkstra::solve() {
     
     // continue until every edge has been visited
@@ -93,8 +106,10 @@ void Dijkstra::solve() {
     return;
 }
 
-/* once we switch to a new node, we add it (and all its edges) to the 
-*  visited & edges_available vectors
+
+/* add_node_to_visited(unsigned node_index)
+*   Mark the node as 'visited' so we don't loop over it again.
+*   Push all this node's edges onto the 'edges_' vector
 */
 void Dijkstra::add_node_to_visited(unsigned node_index) {
     //cout << "nodes_visited in add_node_to_visited" << endl;
@@ -111,12 +126,16 @@ void Dijkstra::add_node_to_visited(unsigned node_index) {
 
 }
 
-// takes in the node number (original index from the dataset), and outputs the index inside our subset
-unsigned Dijkstra::get_node_idx(unsigned node_index) {
+
+/* get_node_idx(unsigned node_index)
+*   The node index isn't necessarily the index in our vector (node 500 could be the 2nd index).
+*   This returns the index of our desired node (with given ID) within our vectors
+*/
+unsigned Dijkstra::get_node_idx(unsigned node_ID) {
 
 
     for (unsigned i = 0; i < dataset_.size(); i++) {
-        if (dataset_[i]._idx == node_index) {
+        if (dataset_[i]._idx == node_ID) {
             return i;
         }
     }
@@ -125,6 +144,14 @@ unsigned Dijkstra::get_node_idx(unsigned node_index) {
 }
 
 
+/* print_path_()
+*  Identical to print_path_file, but prints to the console
+*  Prints to 'output3.txt'. 
+*  Data printed:
+*       - Node index
+*       - This node's 'previous' node index
+*       - This node's distance from start
+*/
 void Dijkstra::print_path() {
     for (unsigned i = 0; i < path.size(); i++) {
         cout << "Node      : " << path[i].first  << endl;
@@ -136,7 +163,14 @@ void Dijkstra::print_path() {
     print_path_file();
 }
 
-/* print dataset in CSV format */
+
+/* print_path_file()
+*  Prints to 'output3.txt'. 
+*  Data printed:
+*       - Node index
+*       - This node's 'previous' node index
+*       - This node's distance from start
+*/
 void Dijkstra::print_path_file(){
 
     string file_name = "output3.txt";
@@ -155,32 +189,25 @@ void Dijkstra::print_path_file(){
 
     }
 
-<<<<<<< HEAD
-    //vector<unsigned> p = path_start_to_end(7);
-=======
-    // vector<unsigned> p = path_start_to_end(7);
-    vector<unsigned> p = path_target_distance(0.0143+.002);
->>>>>>> 2c5b5c2 (added target distance method)
-
-    // print the path from the desired node
-    // for (unsigned i = 0; i < p.size(); i++) {
-    //     output << p[i] << "  ";
-    // }
 
 
     output.close();
 }
 
 
-
-// returns the pair<node, prev_node> from our path vector. TAKES IN THE ORIGINAL INDEX FROM THE DATASET
+/* get_pair_at_node(unsigned index)
+*  Returns the pair of <node_index, previous_node> 
+*/
 pair<unsigned, unsigned> Dijkstra::get_pair_at_node(unsigned index) {
     unsigned idx = get_node_idx(index);
 
     return path[idx];
 }
 
-// returns the distance of this node from the start point. TAKES IN THE ORIGINAL INDEX FROM THE DATASET
+
+/* get_distance_at_node(unsigned index)
+*  Getter function to grab the distance of the desired node number
+*/
 double Dijkstra::get_distance_at_node(unsigned index) {
     unsigned idx = get_node_idx(index);
     
@@ -188,13 +215,16 @@ double Dijkstra::get_distance_at_node(unsigned index) {
 }
 
 
-// TODO function that returns a path vector given some end node (0th index is start, last index is end) TAKES IN THE ORIGINAL INDEX FROM THE DATASET
-// This back-tracks from the end. Goes through the path vector starting at the end, then iterate to the 'previous' node (path.second)
+/* path_start_to_end(unsigned end_node_index)
+*  Takes in the index of the end node.
+*  Each node points to its 'previous' node on the path (like a list). We walk this all the way back to the starting node
+*/
 vector<unsigned> Dijkstra::path_start_to_end(unsigned end_node_index) {
 
     vector<unsigned> path_to_end;
     unsigned curr_index = get_node_idx(end_node_index);
 
+    // jump to the 'previous' node until we reach the start. Push back each node until we get to the start 
     while (path[curr_index].first != start_) {
         path_to_end.push_back(path[curr_index].first);          // path[i].first is the 'current node', which the path follows
 
@@ -202,17 +232,23 @@ vector<unsigned> Dijkstra::path_start_to_end(unsigned end_node_index) {
     }
     path_to_end.push_back(path[curr_index].first);
 
+    // This traverses it backwards, so we need to reverse it to get it in start-end order 
     reverse(path_to_end.begin(), path_to_end.end());
 
     return path_to_end;
 }
 
 
+/* path_target_distance(double target_distance)
+*  Takes a tartet distance, and returns the path that is closest to this target distance from the starting node.
+*  This calls the 'path_start_to_end' function, which grabs the path to the desired node.
+*/
 vector<unsigned> Dijkstra::path_target_distance(double target_distance) {
 
     double closest_dist = DBL_MAX;
     unsigned target_node = 0;
 
+    // loop through the distances_ vector. Once we find the node who's distance is closest to our target_distance, we return the path to that index (from start)
     for (unsigned i = 0; i < distances_.size(); i++ ) {
         double this_dist = abs(target_distance - distances_[i]) ;
         if (this_dist < closest_dist) {
