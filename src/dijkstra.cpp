@@ -97,11 +97,11 @@ void Dijkstra::solve() {
 *  visited & edges_available vectors
 */
 void Dijkstra::add_node_to_visited(unsigned node_index) {
-    cout << "nodes_visited in add_node_to_visited" << endl;
+    //cout << "nodes_visited in add_node_to_visited" << endl;
     
-    cout << "input node for nodes_visited: " << node_index << endl;
+    //cout << "input node for nodes_visited: " << node_index << endl;
     unsigned idx = get_node_idx(node_index);
-    cout << "index for nodes_visited: " << idx << endl;
+    //cout << "index for nodes_visited: " << idx << endl;
 
     nodes_visited_[idx] = true;    // add current node to the visited list
 
@@ -155,12 +155,12 @@ void Dijkstra::print_path_file(){
 
     }
 
-    vector<unsigned> p = path_start_to_end(7);
+    //vector<unsigned> p = path_start_to_end(7);
 
     // print the path from the desired node
-    for (unsigned i = 0; i < p.size(); i++) {
-        output << p[i] << "  ";
-    }
+    // for (unsigned i = 0; i < p.size(); i++) {
+    //     output << p[i] << "  ";
+    // }
 
 
     output.close();
