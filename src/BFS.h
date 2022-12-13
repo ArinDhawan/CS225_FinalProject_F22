@@ -39,7 +39,7 @@ std::vector<Node> makeAdjSet(std::vector<Node> nodeSet, std::vector<Edge> edgeSe
     INPUTS: combined vector list of nodes with edges per node
     OUTPUTS: subset of a vector list of nodes with edges per node
 */
-std::vector<Node> makeSubset(std::vector<Node> dataset);
+std::pair<unsigned, double> makeSubset(std::vector<Node>& subset, std::vector<Node> dataset);
 
 /*
     Obtain the user's input for a (Unsign) center node and (Double) radius

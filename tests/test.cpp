@@ -48,18 +48,31 @@ TEST_CASE("DatasetVerySmall", "[Test2]") {
 
         //TODO: Testing MakeSubset : 
         /* constuct 'circle' subset */
-        //subset = makeSubset(dataset);
+        Node CENTER, CURR;
+        Dijkstra PATH;
+        std::vector<Node> subset;
+        std::pair<unsigned, double> subset_user_data = makeSubset(subset, dataset);
+        unsigned CENTER_IDX = subset_user_data.first;
+        double RADIUS_SQR = std::pow(subset_user_data.second, 2);
 
         /* check subset */
+        CENTER = dataset[CENTER_IDX];
         for(auto sub_node : subset){
+            CURR = dataset[sub_node._idx];
+
             /* check that SUB_NODE is within RADIUS distance to CENTER */
-            //REQUIRE
+            REQUIRE(std::pow(CURR._x - CENTER._x, 2) + std::pow(CURR._x - CENTER._x, 2) <= RADIUS_SQR);
 
             /* check that path exists from SUB_NODE to CENTER */
-            //REQUIRE
+            PATH = Dijkstra(dataset, CENTER_IDX);
+            PATH.solve();
+            REQUIRE(PATH.get_distance_at_node(sub_node._idx) != UINT_MAX);
 
             /* check that all nodes in path are within RADIUS distance to CENTER */
-            //REQUIRE
+            for(auto path_idx : PATH.path_start_to_end(sub_node._idx)){
+                CURR = dataset[path_idx];
+                REQUIRE(std::pow(CURR._x - CENTER._x, 2) + std::pow(CURR._x - CENTER._x, 2) <= RADIUS_SQR);
+            }
         }
 
         

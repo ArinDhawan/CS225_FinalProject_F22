@@ -39,7 +39,8 @@ int main() {
         dataset = makeDataSet(curr_nodes, curr_edges);
         
         /* constuct 'circle' subset */
-        subset = makeSubset(dataset);
+        std::vector<Node> subset;
+        std::pair<unsigned, double> subset_user_data = makeSubset(subset, dataset);
 
         /* call dijkstra */
         Dijkstra d(dataset, 0);

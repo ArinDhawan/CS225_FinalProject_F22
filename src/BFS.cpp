@@ -127,17 +127,17 @@ std::vector<Node> makeAdjSet(std::vector<Node> nodeSet, std::vector<Edge> edgeSe
 }
 
 /* Given a dataset of nodes create a smaller circular subset via user inputs  */
-std::vector<Node> makeSubset(std::vector<Node> dataset){
+std::pair<unsigned, double> makeSubset(std::vector<Node>& subset, std::vector<Node> dataset){
 
     //Check for empty datasets
     if(dataset.empty()){
         std::cout << "FAIL\nfile: BFS.cpp, line: " << __LINE__ << std::endl;
-        return std::vector<Node>();
+        return std::pair<unsigned, double>();
     }
 
     //Init vars
+    subset.clear();
     std::queue<Node> queue;
-    std::vector<Node> ret;
     std::vector<unsigned> visited(dataset.size(), false);
     Node curr_node;
     unsigned new_node_idx;
@@ -157,7 +157,7 @@ std::vector<Node> makeSubset(std::vector<Node> dataset){
     while(!queue.empty()){
 
         //Pop from queue and add it to the return vector
-        ret.push_back(queue.front());
+        subset.push_back(queue.front());
         curr_node = queue.front();
         queue.pop();
 
@@ -184,11 +184,10 @@ std::vector<Node> makeSubset(std::vector<Node> dataset){
         }
     }
     //Sort the subset
-    sortSet(ret);
+    sortSet(subset);
 
-    return ret;
+    return user;
 }
-
 
 /* Obtain the user's input for a (Unsign) center node and (Double) radius */
 std::pair<unsigned, double> getUserInput(){
