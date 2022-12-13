@@ -101,7 +101,7 @@ void Dijkstra::solve() {
 
     }
     
-    print_path();
+    //print_path();
 
     return;
 }

@@ -25,8 +25,7 @@ class Dijkstra {
         Dijkstra();
 
         Dijkstra(vector<Node> dataset, unsigned start_index);
-
-        ~Dijkstra();
+        
         void solve();
 
         // takes in the node number (original index from the dataset), and outputs the index inside our subset

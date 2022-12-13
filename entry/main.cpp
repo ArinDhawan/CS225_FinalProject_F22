@@ -19,16 +19,21 @@ int main() {
     //PRE-MADE INSTRUCTIONS FOR MAIN:
     /*Vector String Testcase Files*/
     std::vector<std::pair<std::string, std::string>> file_list;
+    file_list.push_back({"../datasets/verysmall_nodes.txt", "../datasets/verysmall_edges.txt"});
+    //file_list.push_back({"../datasets/small_nodes.txt", "../datasets/small_edges.txt"});
+    //file_list.push_back({"../datasets/san_francisco_nodes.txt", "../datasets/san_francisco_edges.txt"});
+    //file_list.push_back({"../datasets/california_nodes.txt", "../datasets/california_edges.txt"});
 
     /* Load vector with custom database*/
-    std::string x;
-    std::cout << "Enter node file path:"; 
-    std::cin >> x;
+    // std::string x;
+    // std::cout << "Enter node file path:"; 
+    // std::cin >> x;
 
-    std::string y;
-    std::cout << "Enter edge file path:";
-    std::cin >> y;
-    file_list.push_back({x,y});
+    // std::string y;
+    // std::cout << "Enter edge file path:";
+    // std::cin >> y;
+    // file_list.push_back({x,y});
+
 
     /*Declare vars*/
     std::vector<Node> subset;  
@@ -51,7 +56,7 @@ int main() {
         d.solve();
 
         /* render PNG */
-        render(subset, d.path_start_to_end(50), 1000, 5).writeToFile("out.png");
+        render(subset, d.path_start_to_end(0), 1000, 5).writeToFile("out.png");
     }
 
     return 0;
