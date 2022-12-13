@@ -155,7 +155,12 @@ void Dijkstra::print_path_file(){
 
     }
 
+<<<<<<< HEAD
     //vector<unsigned> p = path_start_to_end(7);
+=======
+    // vector<unsigned> p = path_start_to_end(7);
+    vector<unsigned> p = path_target_distance(0.0143+.002);
+>>>>>>> 2c5b5c2 (added target distance method)
 
     // print the path from the desired node
     // for (unsigned i = 0; i < p.size(); i++) {
@@ -200,4 +205,21 @@ vector<unsigned> Dijkstra::path_start_to_end(unsigned end_node_index) {
     reverse(path_to_end.begin(), path_to_end.end());
 
     return path_to_end;
+}
+
+
+vector<unsigned> Dijkstra::path_target_distance(double target_distance) {
+
+    double closest_dist = DBL_MAX;
+    unsigned target_node = 0;
+
+    for (unsigned i = 0; i < distances_.size(); i++ ) {
+        double this_dist = abs(target_distance - distances_[i]) ;
+        if (this_dist < closest_dist) {
+            closest_dist = this_dist;
+            target_node = i;
+        }
+    }
+
+    return path_start_to_end(target_node);
 }
