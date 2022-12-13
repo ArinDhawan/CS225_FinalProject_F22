@@ -89,7 +89,7 @@ TEST_CASE("DatasetVerySmall", "[Test2]") {
 
         //TODO: Testing RenderPNG : 
         /* render PNG */
-        render(dataset, d.path_start_to_end(6), 1000, 1).writeToFile("out1.png");
+        render(dataset, d, 0, 1000, 1).writeToFile("out1.png");
 
     }
 }
@@ -124,7 +124,7 @@ TEST_CASE("DatasetSmall", "[Test3]") {
 
         //TODO: Testing RenderPNG : 
         /* render PNG */
-        render(dataset, d.path_start_to_end(50), 1000, 5).writeToFile("out2.png");
+        render(dataset, d, 0, 1000, 5).writeToFile("out2.png");
     }
 }
 
@@ -158,7 +158,7 @@ TEST_CASE("SanFrancisco", "[Test4]") {
 
         //TODO: Testing RenderPNG : 
         /* render PNG */
-        render(dataset, d.path_start_to_end(50), 1000, 5).writeToFile("out3.png");
+        render(dataset, d, 0, 1000, 5).writeToFile("out3.png");
     }
 }
 
@@ -193,7 +193,7 @@ TEST_CASE("California", "[Test5]") {
 
         //TODO: Testing RenderPNG : 
         /* render PNG */
-        render(dataset, d.path_start_to_end(50), 1000, 5).writeToFile("out4.png");
+        render(dataset, d, 0, 1000, 5).writeToFile("out4.png");
     }
 }
 

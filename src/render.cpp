@@ -2,7 +2,7 @@
 #include "BFS.h"
 
 /* render given dataset as PNG of dim side_size by side_size */
-cs225::PNG render(std::vector<Node> dataset, std::vector<unsigned> short_path, unsigned side_size, unsigned res){
+cs225::PNG render(std::vector<Node> dataset, Dijkstra path, unsigned destination_idx, unsigned side_size, unsigned res){
     /* define coordinate transform function constants*/
     std::pair<unsigned, double> user = getUserInput();
     unsigned __CENTER_IDX = user.first;
@@ -41,6 +41,9 @@ cs225::PNG render(std::vector<Node> dataset, std::vector<unsigned> short_path, u
     cs225::HSLAPixel pix_black(0, 0, 0, 1);
     cs225::HSLAPixel pix_red(0, 1, 0.5, 0.4);
     cs225::HSLAPixel pix_green(147, 0.5, 0.5, 0.5);
+
+    /* make short path */
+    std::vector<unsigned> short_path = path.path_start_to_end(destination_idx);
 
     /* parse dataset and load nodes to PNG */
     for(auto node : dataset){

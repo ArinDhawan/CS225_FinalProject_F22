@@ -56,7 +56,7 @@ int main() {
         d.solve();
 
         /* render PNG */
-        render(subset, d.path_start_to_end(0), 1000, 5).writeToFile("out.png");
+        render(subset, d, 0, 1000, 5).writeToFile("out.png");
     }
 
     return 0;
