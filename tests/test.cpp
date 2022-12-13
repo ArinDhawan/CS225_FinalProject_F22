@@ -46,8 +46,6 @@ TEST_CASE("DatasetVerySmall", "[Test2]") {
              y++;
         }
 
-
-
         //TODO: Testing MakeSubset : 
         /* constuct 'circle' subset */
         //subset = makeSubset(dataset);
@@ -95,9 +93,6 @@ TEST_CASE("DatasetSmall", "[Test3]") {
              y++;
         }
 
-        /* constuct 'circle' subset */
-        //subset = makeSubset(dataset);
-
 
         //TODO: Testing RenderPNG : 
         /* render PNG */
@@ -130,8 +125,6 @@ TEST_CASE("SanFrancisco", "[Test4]") {
              y++;
         }
 
-        /* constuct 'circle' subset */
-        //subset = makeSubset(dataset);
 
         //TODO: Testing RenderPNG : 
         /* render PNG */
@@ -165,8 +158,6 @@ TEST_CASE("California", "[Test5]") {
              y++;
         }
 
-        /* constuct 'circle' subset */
-        //subset = makeSubset(dataset);
 
         //TODO: Testing RenderPNG : 
         /* render PNG */
