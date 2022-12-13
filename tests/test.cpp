@@ -50,6 +50,18 @@ TEST_CASE("DatasetVerySmall", "[Test2]") {
         /* constuct 'circle' subset */
         //subset = makeSubset(dataset);
 
+        /* check subset */
+        for(auto sub_node : subset){
+            /* check that SUB_NODE is within RADIUS distance to CENTER */
+            //REQUIRE
+
+            /* check that path exists from SUB_NODE to CENTER */
+            //REQUIRE
+
+            /* check that all nodes in path are within RADIUS distance to CENTER */
+            //REQUIRE
+        }
+
         
         //Testing Dijkstra: 
         /* call dijkstra */
