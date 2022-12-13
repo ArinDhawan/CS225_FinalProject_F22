@@ -1,0 +1,11 @@
+/workspaces/CS225/225CSFinalP/CS225_FinalProject_F22/build/CMakeFiles/test.dir
+/workspaces/CS225/225CSFinalP/CS225_FinalProject_F22/build/CMakeFiles/main.dir
+/workspaces/CS225/225CSFinalP/CS225_FinalProject_F22/build/CMakeFiles/edit_cache.dir
+/workspaces/CS225/225CSFinalP/CS225_FinalProject_F22/build/CMakeFiles/rebuild_cache.dir
+/workspaces/CS225/225CSFinalP/CS225_FinalProject_F22/build/lib/CMakeFiles/lodepng.dir
+/workspaces/CS225/225CSFinalP/CS225_FinalProject_F22/build/lib/CMakeFiles/cs225.dir
+/workspaces/CS225/225CSFinalP/CS225_FinalProject_F22/build/lib/CMakeFiles/edit_cache.dir
+/workspaces/CS225/225CSFinalP/CS225_FinalProject_F22/build/lib/CMakeFiles/rebuild_cache.dir
+/workspaces/CS225/225CSFinalP/CS225_FinalProject_F22/build/src/CMakeFiles/src.dir
+/workspaces/CS225/225CSFinalP/CS225_FinalProject_F22/build/src/CMakeFiles/edit_cache.dir
+/workspaces/CS225/225CSFinalP/CS225_FinalProject_F22/build/src/CMakeFiles/rebuild_cache.dir

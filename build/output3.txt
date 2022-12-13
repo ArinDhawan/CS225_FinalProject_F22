@@ -1,0 +1,36 @@
+Node      : 0
+Previous  : 0
+Distance  : 0
+----------------------
+Node      : 1
+Previous  : 0
+Distance  : 0.002025
+----------------------
+Node      : 2
+Previous  : 1
+Distance  : 0.016375
+----------------------
+Node      : 3
+Previous  : 2
+Distance  : 0.028654
+----------------------
+Node      : 4
+Previous  : 3
+Distance  : 0.039753
+----------------------
+Node      : 5
+Previous  : 6
+Distance  : 0.012109
+----------------------
+Node      : 6
+Previous  : 0
+Distance  : 0.005952
+----------------------
+Node      : 7
+Previous  : 5
+Distance  : 0.013517
+----------------------
+Node      : 8
+Previous  : 5
+Distance  : 0.024117
+----------------------
