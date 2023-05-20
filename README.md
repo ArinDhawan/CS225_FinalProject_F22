@@ -8,12 +8,6 @@
 3. [Code Execution](#running)
 4. [Test Suite](#tests)
 
-<div id='video'/>
-
-# **Presentation Video**
-
-[A link to the presentation video]()
-### **`TODO TODO TODO TODO`**
 
 <div id='intro'/>
 
